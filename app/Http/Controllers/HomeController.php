@@ -9,16 +9,17 @@ use App\Models\Category;
 class HomeController extends Controller
 {
     // list all products
-    public function index() 
+    public function index(string $category = null) 
     {
+        if($category) {
+            $products = Product::all()->where('category_id', $category);
+            $categories = Category::all();
+            return view('welcome', ['products'=>$products,'categories'=>$categories]);
+        }
+
         $products = Product::all();
-        return response()->json($products);
+        $categories = Category::all();
+        return view('welcome', ['products'=>$products,'categories'=>$categories]);
     }
 
-    // list all category
-    public function fetchCategories(Request $request) 
-    {
-        $categories = Category::all();
-        return response()->json($categories);
-    }
 }

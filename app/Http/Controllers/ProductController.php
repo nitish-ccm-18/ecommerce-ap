@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Category;
 
 class ProductController extends Controller
 {
@@ -17,7 +18,8 @@ class ProductController extends Controller
     // Display form for creating product
     public function create()
     {
-        return view('vendor.products.create');
+        $categories = Category::all();
+        return view('vendor.products.create',['categories'=>$categories]);
     }
 
     // Store a newly created Product
@@ -131,5 +133,16 @@ class ProductController extends Controller
         
         return redirect('/products/'.$request->id);
     }
+
+
+   // change status
+   public function changeStatus($id) {
+    $status = Product::find($id)->status;
+    $status =  (int) $status== 0 ? 1 : 0;
+    Product::find($id)->update(
+        ['status' => $status ]
+    );
+    return redirect('/vendors/dashboard');
+}
 
 }

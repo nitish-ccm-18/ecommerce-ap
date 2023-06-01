@@ -77,5 +77,15 @@ class CategoryController extends Controller
         $categories = Category::all();
         return response()->json($categories);
     }
+
+    // change status
+    public function changeStatus($id) {
+        $category = Category::find($id)->status;
+        $status =  (int) $category== 0 ? 1 : 0;
+        Category::find($id)->update(
+            ['status' => $status ]
+        );
+        return redirect('/vendors/dashboard');
+    }
    
 }

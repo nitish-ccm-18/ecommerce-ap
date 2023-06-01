@@ -12,7 +12,9 @@
         @csrf
         <div class="mb-3">
             <select class="form-select form-select mb-3" name="category_id" id="categories">
-                {{-- List of categories from Categories table --}}
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                @endforeach
             </select>
         </div>
         <div class="mb-3">
