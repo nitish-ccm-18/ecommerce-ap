@@ -16,7 +16,7 @@
 
     @include('layouts.header')
 
-    <div class="container">
+    <div class="container-fluid">
         @include('flash-message')
         @yield('content')
     </div>

@@ -9,6 +9,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VendorController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\SweetAlertController;
+use Session;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -20,7 +23,7 @@ use App\Http\Controllers\AuthController;
 |
 */
 // Home Controller
-Route::get('/{category?}', [HomeController::class,'index'])->where('category', '[0-9]+');;
+Route::get('/{category?}', [HomeController::class,'index'])->where('category', '[0-9]+');
 
 
 // Route::get('/', [HomeController::class,'index']);
@@ -30,7 +33,13 @@ Route::get('/{category?}', [HomeController::class,'index'])->where('category', '
 Route::view('/users/register','users.register');
 Route::view('/users/dashboard','users.dashboard');
 
+
 Route::post('/users/register', [UserController::class,'store']);
+
+Route::get('/users/profile/edit', [UserController::class, 'editProfilePage']);
+Route::post('/users/profile/edit', [UserController::class, 'edit']);
+
+Route::get('/users/profile', [UserController::class, 'showProfile']);
 
 
 // Vendor Route
@@ -106,4 +115,11 @@ Route::get('/login', [AuthController::class,'login'])->name('login');
 Route::post('/authenticate',[AuthController::class,'authenticate']);
 Route::get('/logout',[AuthController::class,'logout']);
 
+Route::get('/cart/add/{id}', [CartController::class,'add']);
+Route::get('/cart/remove', [CartController::class,'remove']);
 
+Route::get('/reset',function() {
+    Session::flush();
+});
+
+Route::view('cart','cart');

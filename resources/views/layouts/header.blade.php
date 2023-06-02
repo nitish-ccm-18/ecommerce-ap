@@ -7,7 +7,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
       <ul class="navbar-nav">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Features</a>
@@ -15,6 +15,7 @@
         <li class="nav-item">
           <a class="nav-link" href="#">Pricing</a>
         </li>
+        
         
           @if (Auth::check())
           <li class="nav-item dropdown">
@@ -28,14 +29,10 @@
           @else
             <a class="nav-link" href="/login">Login</a> 
           @endif
-         
-          
-              
-         
-
         </li>
         
       </ul>
+      <a href="/cart" class="btn btn-outline-secondary">Items {{ null!== Session::get('cart') ? count(Session::get('cart')) : 0 ;}}</a>
     </div>
   </div>
 </nav>
