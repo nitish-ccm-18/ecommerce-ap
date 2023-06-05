@@ -28,15 +28,30 @@ class CartController extends Controller
             ];
         }
         Session::put('cart',$cart);
-        return redirect('/');
+        return redirect('/')->with('success','Product added to cart');
     }
+
+    public function update(Request $request)
+    {
+        if($request->id && $request->quantity){
+            $cart = session()->get('cart');
+            $cart[$request->id]["quantity"] = $request->quantity;
+            session()->put('cart', $cart);
+            session()->flash('success', 'Cart updated successfully');
+        }
+    }
+  
 
     // remove from cart
-    public function remove() {
-
+    public function remove(Request $request)
+    {
+        if($request->id) {
+            $cart = session()->get('cart');
+            if(isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('cart', $cart);
+            }
+            session()->flash('success', 'Product removed successfully');
+        }
     }
-
-    // update cart
-
-    // list all items
 }

@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Product;
@@ -11,7 +12,10 @@ use App\Http\Controllers\VendorController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\SweetAlertController;
-use Session;
+use App\Http\Controllers\CouponController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CheckoutController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,12 +26,9 @@ use Session;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 // Home Controller
 Route::get('/{category?}', [HomeController::class,'index'])->where('category', '[0-9]+');
-
-
-// Route::get('/', [HomeController::class,'index']);
-
 
 // Users Route
 Route::view('/users/register','users.register');
@@ -78,20 +79,11 @@ Route::middleware(['auth','isVendor'])->group(function () {
 // Category Routes
 Route::get('/categories', [CategoryController::class,'index']);
 
-
-
-
-
-
-
-
-
 Route::get('/categories/all',[CategoryController::class,'fetchCategories']);
 
 
 // Products Routes
 Route::get('/products', [ProductController::class,'index']);
-
 
 Route::get('/products/{id}', [ProductController::class,'show']);
 Route::get('/products/category/{category}', [ProductController::class,'productByCategory']);
@@ -116,10 +108,24 @@ Route::post('/authenticate',[AuthController::class,'authenticate']);
 Route::get('/logout',[AuthController::class,'logout']);
 
 Route::get('/cart/add/{id}', [CartController::class,'add']);
-Route::get('/cart/remove', [CartController::class,'remove']);
+
+Route::patch('/cart/update', [CartController::class,'update'])->name('cart.update');
+
+Route::delete('/cart/remove', [CartController::class,'remove'])->name('cart.remove');
 
 Route::get('/reset',function() {
     Session::flush();
 });
 
-Route::view('cart','cart');
+Route::view('cart','cart')->name('cart');
+
+
+Route::get('/coupons/create',[CouponController::class,'create']);
+Route::post('/coupons/store',[CouponController::class,'store']);
+
+
+
+Route::view('/test-address','users.address');
+Route::post('/address/new', [AddressController::class,'store']);
+
+Route::get('/checkout',[CheckoutController::class,'checkout']);

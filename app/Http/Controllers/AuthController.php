@@ -23,10 +23,10 @@ class AuthController extends Controller
             $request->session()->regenerate();
  
             if(Auth::user()->type == 'user') {
-                return redirect('/users/dashboard');
+                return redirect('/users/dashboard')->with('success','You are logged in as user');
             }
             else {
-                return redirect('/vendors/dashboard');
+                return redirect('/vendors/dashboard')->with('success','You are logged in as vendor');
             }
         }
 
@@ -43,6 +43,6 @@ class AuthController extends Controller
         
         $request->session()->regenerateToken();
         
-        return redirect('/');
+        return redirect('/')->with('success','Logout successfully.');
     }
 }

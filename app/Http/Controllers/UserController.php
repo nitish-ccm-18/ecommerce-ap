@@ -37,7 +37,7 @@ class UserController extends Controller
             ]);
             return redirect('/login');
         }
-        return redirect('/login');
+        return redirect('/login')->with('success','User created successfully.');
     }
 
 
