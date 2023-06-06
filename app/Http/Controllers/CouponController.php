@@ -23,9 +23,9 @@ class CouponController extends Controller
 
         Coupon::create([
             'code' => $request->coupon_code,
-            'description' => $request->description,
+            'description' => $request->coupon_description,
             'from' => $request->valid_from,
-            'expiry' => $request->expiry,
+            'expiry' => $request->valid_till,
             'discount_type' => $request->coupon_type,
             'discount_value' => $request->coupon_value
         ]);

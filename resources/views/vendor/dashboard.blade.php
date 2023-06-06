@@ -85,4 +85,50 @@ Vendor Dashboard
 </div>
 
 
-@endsection
+
+
+{{-- Coupons Section --}}
+@foreach ($coupons as $item)
+    <div class="row">
+        <div class="card border-primary mb-3" style="max-width: 18rem;">
+            <div class="card-header">{{ $item->code }}</div>
+            <div class="card-body text-primary">
+              <h5 class="card-title">Rs. {{ $item->discount_value }}</h5>
+              <p class="card-text">{{ $item->description}}</p>
+              <p class="cart-text">{{ $item->expiry }}</p>
+            </div>
+          </div>
+    </div>
+@endforeach
+
+
+
+
+
+
+    <table class="table">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Product Name</th>
+            <th scope="col">User Id</th>
+            <th scope="col">Order Id</th>
+          </tr>
+        </thead>
+        <tbody>
+            @foreach ($orders as $id=>$order)
+            <tr>
+                <th scope="row">{{ $id }}</th>
+                <td>{{ $order->name}}</td>
+                <td>{{ $order->price }}</td>
+                <td>{{ $order->id }}</td>
+              </tr>
+            {{ $order->id }}
+        @endforeach
+         
+        </tbody>
+      </table>
+
+      @endsection
+      
+     

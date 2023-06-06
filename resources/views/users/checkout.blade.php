@@ -21,18 +21,27 @@
             </div>
             @php $total += $details['price'] * $details['quantity'] @endphp
         @endforeach
-        Total {{ $total }}
-        <div class="row">
-            @foreach ($addresses as $address)
-            <div>
-                <label>{{ $address->tag}}</label>
-                <input type="radio" name="address" value="{{ $address->id }}">{{$address->line1.",".$address->line2.",".$address->city.",".$address->state.",".$address->pincode}}
+        <form action="/checkout" method="post">
+            @csrf
+            <div class="col-md-2">
+                <label>Total Price</label>
+                <input type="text" class="form-control" name="total_price" value="{{ $total }}" readonly>
             </div>
-                
-            @endforeach
-        </div>
-
-        <a href="/order" class="btn btn-primary">Order</a>
+            <div class="container">
+                @foreach ($addresses as $address)
+                    <div class="col-md-6">
+                        <label>{{ $address->tag }}</label>
+                        <input type="radio" name="address_id"
+                            value="{{ $address->id }}">{{ $address->line1 . ',' . $address->line2 . ',' . $address->city . ',' . $address->state . ',' . $address->pincode }}
+                    </div>
+                @endforeach
+                <div class="col-md-6">
+                    <a href="/address/new" class="btn btn-primary btn-sm mb-2">+ Address</a>
+                    <br>
+                    <input type="submit" class="btn btn-warning" value="Order">
+                </div>
+            </div>
+        </form>
     @endif
 
 

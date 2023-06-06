@@ -30,7 +30,7 @@
     <div class="d-flex justify-content-start">
         <div class="mb-3 mx-3">
             <label for="CouponType">Discount Type</label>
-           <select name="CouponType" id="" class="form-control">
+           <select id="" class="form-control" name="coupon_type">
             <option>Select Coupon Type</option>
             <option value="percentage">Percentage Coupon</option>
             <option value="fixed">Fixed Coupon</option>
@@ -38,7 +38,7 @@
         </div>
         <div class="mb-3">
             <label for="CouponValue">Discount Value</label>
-            <input type="number" class="form-control" id="CouponValue" name="CouponValue">
+            <input type="number" class="form-control" id="CouponValue" name="coupon_value">
         </div>
     </div>
     <div class="mb-3">

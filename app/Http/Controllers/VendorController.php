@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Coupon;
+use DB;
 
 class VendorController extends Controller
 {
@@ -20,11 +22,19 @@ class VendorController extends Controller
 
         $categories = Category::all();
         $category_count = $categories->count();
+
+        $orders =  DB::select('SELECT * FROM `orders` join orderdetails on orders.id = orderdetails.order_id 
+        join products on orderdetails.product_id = products.id');
+
+        $coupons = Coupon::all();
+
         return view('vendor.dashboard',[
             "products" => $products,
             "product_count"=>$product_count,
             "categories" => $categories,
-            'category_count'=>$category_count
+            'category_count'=>$category_count,
+            "orders" => $orders,
+            "coupons" => $coupons
         ]);
     }
 }

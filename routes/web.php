@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
+use App\Models\Order;
+use App\Models\Orderdetail;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
@@ -125,7 +128,18 @@ Route::post('/coupons/store',[CouponController::class,'store']);
 
 
 
-Route::view('/test-address','users.address');
+Route::view('/address/new','users.address');
 Route::post('/address/new', [AddressController::class,'store']);
 
-Route::get('/checkout',[CheckoutController::class,'checkout']);
+Route::get('/checkout',[CheckoutController::class,'checkoutPage']);
+Route::post('/checkout',[CheckoutController::class,'checkout']);
+
+
+Route::get('fetch-orders', function() {
+    $result = DB::select('SELECT * FROM `orders` join orderdetails on orders.id = orderdetails.order_id 
+    join products on orderdetails.product_id = products.id join users on orders.user_id = users.id');
+
+    echo "<pre>";
+    print_r($result);
+    echo "</pre>";
+});
