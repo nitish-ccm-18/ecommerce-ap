@@ -10,33 +10,51 @@ User Dashboard
     <div class="mb-3">
       <label for="inputAddress">Address Line1</label>
       <input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" name="line1">
+      @error('line1')
+      <span class="text-danger">{{ $message }}</span>
+      @enderror
     </div>
     <div class="mb-3">
       <label for="inputAddress2">Address Line 2</label>
       <input type="text" class="form-control" id="inputAddress2" name="line2" placeholder="Apartment, studio, or floor">
+      @error('line2')
+      <span class="text-danger">{{ $message }}</span>
+      @enderror
     </div>
     <div class="form-row mb-3">
       <div class="form-group col-md-5">
         <label for="inputCity">City</label>
         <input type="text" class="form-control" id="inputCity" name="city">
+        @error('city')
+        <span class="text-danger">{{ $message }}</span>
+      @enderror
       </div>
       <div class="form-group col-md-4">
         <label for="inputState">State</label>
         <select id="inputState" class="form-control" name="state">
-          <option selected>Choose...</option>
-          <option>Haryana</option>
-          <option>Delhi</option>
-          <option>Punjab</option>
-          <option>Uttar Pradesh</option>
+          <option>Choose...</option>
+          <option value="Haryana">Haryana</option>
+          <option value="Delhi">Delhi</option>
+          <option value="Punjab">Punjab</option>
+          <option value="Uttar Pradesh">Uttar Pradesh</option>
         </select>
+        @error('state')
+        <span class="text-danger">{{ $message }}</span>
+      @enderror
       </div>
       <div class="form-group col-md-2">
         <label for="inputZip">Zip</label>
         <input type="text" class="form-control" id="inputZip" name="pincode">
+        @error('pincode')
+      <span class="text-danger">{{ $message }}</span>
+      @enderror
       </div>
       <div class="form-group col-md-2 mb-2">
         <label for="tag">Tag(i.e. Home,Office etc.)</label>
         <input type="text" name="tag" id="tag" class="form-control">
+        @error('tag')
+      <span class="text-danger">{{ $message }}</span>
+      @enderror
       </div>
     <button type="submit" class="btn btn-primary ">Save Address</button>
   </form>

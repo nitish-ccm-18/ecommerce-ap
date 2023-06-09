@@ -19,4 +19,8 @@ class Coupon extends Model
         'discount_type',
         'discount_value'
     ];
+
+    public function orders() {
+        
+    }
 }

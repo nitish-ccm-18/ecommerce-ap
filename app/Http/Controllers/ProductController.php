@@ -68,7 +68,7 @@ class ProductController extends Controller
         }
 
         $category = $product->category;
-        return view('vendor.products.show', ['product'=>$product,'category'=>$category]);
+        return view('product', ['product'=>$product,'category'=>$category]);
     }
 
     // Display form for update category

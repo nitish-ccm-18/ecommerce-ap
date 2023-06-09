@@ -14,7 +14,7 @@ class CartController extends Controller
         $product = Product::find($id);
 
         $cart = Session::get('cart', []);
-
+        // check if given product is exist in the cart or not
         if(isset($cart[$id])) {
             $cart[$id]['quantity']++;
         }else {
@@ -31,6 +31,7 @@ class CartController extends Controller
         return redirect('/')->with('success','Product added to cart');
     }
 
+    // update in cart
     public function update(Request $request)
     {
         if($request->id && $request->quantity){

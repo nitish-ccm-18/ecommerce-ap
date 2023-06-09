@@ -41,7 +41,7 @@ class UserController extends Controller
     }
 
 
-    // edit user profile
+    
 
     //  Show  User Profile
     public function showProfile(Request $request) {
@@ -62,18 +62,16 @@ class UserController extends Controller
         return view('users.edit',['user'=>$user]);
     }
 
-    // handle profile edit
+    // edit user profile
     public function edit(Request $request) {
-
-
+        // Get Current Authenticated User image
         $id =Auth::user()->id;
-         // Retrieve Current user Image
          $user = User::find($id);
     
         User::where('id',$id)->update([
             'name' => $request->input('name'),
         ]);  
          return redirect('/users/profile');
- 
     }
+    
 }

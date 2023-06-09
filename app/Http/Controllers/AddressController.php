@@ -9,6 +9,16 @@ use Auth;
 class AddressController extends Controller
 {
     public function store(Request $request) {
+        
+        $request->validate([
+            'line1' => 'required',
+            'line2' => 'required',
+            'city' => 'required',
+            'state' => 'required',
+            'pincode' => 'required',
+            'tag' => 'required'
+        ]);
+
         return Address::create([
             'user_id' => Auth::id(),
             'line1' => $request->line1,

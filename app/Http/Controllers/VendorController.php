@@ -37,4 +37,6 @@ class VendorController extends Controller
             "coupons" => $coupons
         ]);
     }
+
+    
 }

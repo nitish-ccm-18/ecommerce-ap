@@ -85,7 +85,6 @@ class CategoryController extends Controller
         Category::find($id)->update(
             ['status' => $status ]
         );
-        
         return redirect('/vendors/dashboard');
     }
    

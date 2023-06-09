@@ -17,10 +17,16 @@ class CouponController extends Controller
     }
 
     public function store(Request $request) {
-        echo "<pre>";
-        print_r($request->input());
-        echo "</pre>";
 
+        $request->validate([
+            'coupon_code' => 'required',
+            'coupon_description' => 'required',
+            'valid_from' => 'required|date',
+            'valid_till' => 'required|date',
+            'coupon_type' => 'required',
+            'coupon_value' => 'required|numeric'
+        ]); 
+        
         Coupon::create([
             'code' => $request->coupon_code,
             'description' => $request->coupon_description,
@@ -31,5 +37,13 @@ class CouponController extends Controller
         ]);
 
         return $request->input();
+    }
+
+    public function deactiveCoupon($coupon_id)
+    {
+        $coupon = Coupon::find($coupon_id);
+        $coupon->update([
+            'status' => 'inactive'
+        ]);
     }
 }

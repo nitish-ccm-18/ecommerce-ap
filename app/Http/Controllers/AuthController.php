@@ -8,6 +8,8 @@ use Auth;
 class AuthController extends Controller
 {
     public function login() {
+        if(Auth::check())
+            return redirect('/');
         return view('login');
     }
 
@@ -29,18 +31,17 @@ class AuthController extends Controller
                 return redirect('/vendors/dashboard')->with('success','You are logged in as vendor');
             }
         }
-
         return back()->withErrors([
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
 
+    // Handle logout of user(user and vendor both)
     public function logout(Request $request)
     {
         Auth::logout();
         
         $request->session()->invalidate();
-        
         $request->session()->regenerateToken();
         
         return redirect('/')->with('success','Logout successfully.');

@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Orderdetail;
+use App\Models\Coupon;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
@@ -57,7 +58,7 @@ Route::middleware(['auth','isVendor'])->group(function () {
     Route::get('/categories/create', [CategoryController::class,'create']);
     Route::post('/categories/create', [CategoryController::class,'store']);
 
-    Route::get('/categories/{id:[0-9]+}',[CategoryController::class,'show']);
+    Route::get('/categories/{id}',[CategoryController::class,'show'])->whereNumber('id');
 
     Route::get('/categories/edit/{id}', [CategoryController::class,'editPage']);
     Route::post('/categories/edit', [CategoryController::class,'edit']);
@@ -143,3 +144,21 @@ Route::get('fetch-orders', function() {
     print_r($result);
     echo "</pre>";
 });
+
+
+// Define Route
+Route::redirect('/home','/');
+
+Route::post('/validate-coupon', function(Request $request) {
+    
+    $coupon_code = $request->coupon_code;
+    // retrieve coupon by code
+    $coupon = Coupon::all()->where('code',$coupon_code);
+    $res = array(
+        "code" => $coupon[0]->code,
+        "expiry_date" => $coupon[0]->expiry,
+        "discount_value" => $coupon[0]->discount_value
+    );
+    return $res;
+})->name('validate-coupon');
+

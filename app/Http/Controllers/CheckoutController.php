@@ -29,7 +29,8 @@ class CheckoutController extends Controller
                 'total_price' => $request->total_price,
                 'address_id' => $request->address_id
             ]);
-            print_r($order);
+            
+            // store each product in Orderdetail page
             foreach (Session::get('cart') as $product) {
                 Orderdetail::create([
                     'product_id' => $product['id'],
@@ -38,7 +39,6 @@ class CheckoutController extends Controller
             }
 
             Session::forget('cart');
-
             return redirect('/')->with('success','Shop More,Enjoy More');
         }
     }
