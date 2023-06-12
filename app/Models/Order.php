@@ -12,7 +12,8 @@ class Order extends Model
     protected $fillable = [
         'user_id',
         'total_price',
-        'address_id'
+        'address_id',
+        'coupon_id'
     ];
 
     // One to Many with Orderdetail Model

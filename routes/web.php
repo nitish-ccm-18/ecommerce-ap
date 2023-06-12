@@ -69,10 +69,16 @@ Route::middleware(['auth','isVendor'])->group(function () {
     Route::get('/products/create', [ProductController::class,'create']);
     Route::post('/products/create', [ProductController::class,'store']);
 
+    Route::get('/vendors/product/{id}',[ProductController::class,'showSingleProduct']);
+
     Route::get('/products/edit/{id}', [ProductController::class,'editPage']);
     Route::post('/products/edit/', [ProductController::class,'edit']);
 
     Route::get('/products/status/edit/{id}', [ProductController::class,'changeStatus']);
+
+
+    Route::get('/coupons/create',[CouponController::class,'create']);
+    Route::post('/coupons/store',[CouponController::class,'store']);
 
 });
 
@@ -124,8 +130,6 @@ Route::get('/reset',function() {
 Route::view('cart','cart')->name('cart');
 
 
-Route::get('/coupons/create',[CouponController::class,'create']);
-Route::post('/coupons/store',[CouponController::class,'store']);
 
 
 
@@ -138,7 +142,7 @@ Route::post('/checkout',[CheckoutController::class,'checkout']);
 
 Route::get('fetch-orders', function() {
     $result = DB::select('SELECT * FROM `orders` join orderdetails on orders.id = orderdetails.order_id 
-    join products on orderdetails.product_id = products.id join users on orders.user_id = users.id');
+    join addresses on orders.address_id = addresses.id join users on orders.user_id = users.id');
 
     echo "<pre>";
     print_r($result);
@@ -149,16 +153,5 @@ Route::get('fetch-orders', function() {
 // Define Route
 Route::redirect('/home','/');
 
-Route::post('/validate-coupon', function(Request $request) {
-    
-    $coupon_code = $request->coupon_code;
-    // retrieve coupon by code
-    $coupon = Coupon::all()->where('code',$coupon_code);
-    $res = array(
-        "code" => $coupon[0]->code,
-        "expiry_date" => $coupon[0]->expiry,
-        "discount_value" => $coupon[0]->discount_value
-    );
-    return $res;
-})->name('validate-coupon');
+Route::post('/coupons/validate', [CouponController::class,'validateCoupon']);
 

@@ -4,11 +4,10 @@
     Welcome | GetProduct
 @endsection
 
-{{ $product }}
 @section('content')
-    <div class="card" style="width: 18rem;">
-        <img class="card-img-top" src="{{ url('public/Image/Products/' . $product->image) }}" alt="Product image">
-        <div class="card-body">
+    <div class="row">
+        <img class="col-3" src="{{ url('public/Image/Products/' . $product->image) }}" alt="Product image" height="200px" width="200px">
+        <div class="col-6">
             <h5 class="card-title">{{ $product->name }} <span class="badge bg-secondary"><a href="/categories/{{$product->category->id}}" class="text-white">{{ $category->name }}</a></span></h5>
             <p class="card-text ">{{ $product->description }}</p>
             <p class="card-text">

@@ -31,7 +31,7 @@
                   <td><img src="{{ url('public/Image/Products/'.$product->image)}}" alt="" width="100" height="100"></td>
                   <td>{{ $product->created_at }}</td>
                   <td>
-                    <a href="/products/{{$product->id}}" class="btn btn-success">Show</a>
+                    <a href="/vendors/product/{{$product->id}}" class="btn btn-success">Show</a>
                     <a href="/products/edit/{{$product->id}}" class="btn btn-warning">Edit</a>
                     <a href="/products/{{$product->id}}" class="btn btn-primary">Active</a>
                   </td>

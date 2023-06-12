@@ -29,7 +29,7 @@ class ProductController extends Controller
         $request->validate([
             'category_id' => 'required',
             'product_name' => 'required | max:10',
-            'product_description' => 'required | max:50',
+            'product_description' => 'required',
             'product_price' => 'required',
             'product_sale_price' => 'required',
             'product_quantity' => 'required',
@@ -70,6 +70,25 @@ class ProductController extends Controller
         $category = $product->category;
         return view('product', ['product'=>$product,'category'=>$category]);
     }
+
+    // Display the specified product
+    public function showSingleProduct($id)
+    {
+        $product = Product::find($id);
+        
+        // if product not found
+        if($product == null) 
+        {
+            return back();
+        }
+
+        $category = $product->category;
+        return view('vendor.products.show', ['product'=>$product,'category'=>$category]);
+    }
+
+
+
+
 
     // Display form for update category
     public function editPage($id) 

@@ -18,8 +18,10 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->decimal('total_price');
             $table->bigInteger('address_id')->unsigned();
+            $table->bigInteger('coupon_id')->unsigned()->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('address_id')->references('id')->on('addresses')->onDelete('cascade');
+            $table->foreign('coupon_id')->references('id')->on('coupons');
         
             $table->timestamps();
         });

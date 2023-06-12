@@ -19,7 +19,7 @@ class AddressController extends Controller
             'tag' => 'required'
         ]);
 
-        return Address::create([
+        Address::create([
             'user_id' => Auth::id(),
             'line1' => $request->line1,
             'line2' => $request->line2,
@@ -28,6 +28,7 @@ class AddressController extends Controller
             'pincode' => $request->pincode,
             'tag' => $request->tag
         ]); 
+        return redirect('/checkout')->with('success','Address added successfully');
     }
 
     

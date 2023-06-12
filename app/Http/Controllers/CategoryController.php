@@ -27,7 +27,7 @@ class CategoryController extends Controller
         // validate data
         $request->validate([
             'category_name' => 'required | max:10',
-            'category_description' => 'required | max:50'
+            'category_description' => 'required '
         ]);
 
         Category::create([
@@ -60,7 +60,7 @@ class CategoryController extends Controller
         // validate data
         $request->validate([
             'category_name' => 'required | max:10',
-            'category_description' => 'required | max:50'
+            'category_description' => 'required'
         ]);
 
         $category = Category::find($request->id);

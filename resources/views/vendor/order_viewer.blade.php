@@ -6,7 +6,7 @@
 
 
 @section('content')
-    <h1 class="text-center">Welcome to Vendor Dashboard</h1>
+    <h1 class="text-center">Order Viewer</h1>
     <div class="d-flex justify-content-between">
         <div>
             <h2>Product Count{{ $product_count }}</h2>

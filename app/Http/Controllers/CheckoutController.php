@@ -27,18 +27,25 @@ class CheckoutController extends Controller
             $order = Order::create([
                 'user_id' => Auth::id(),
                 'total_price' => $request->total_price,
-                'address_id' => $request->address_id
+                'address_id' => $request->address_id,
+                'coupon_id' => $request->coupon_id
             ]);
+
+            
             
             // store each product in Orderdetail page
             foreach (Session::get('cart') as $product) {
                 Orderdetail::create([
                     'product_id' => $product['id'],
-                    'order_id' => $order->id
+                    'order_id' => $order->id,
                 ]);
             }
 
+            
+
             Session::forget('cart');
+            print_r($order);
+            echo $request->coupon_id;
             return redirect('/')->with('success','Shop More,Enjoy More');
         }
     }

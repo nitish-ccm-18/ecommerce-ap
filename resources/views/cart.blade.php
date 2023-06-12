@@ -79,7 +79,8 @@
                         quantity: ele.parents('tr').find('.quantity').val(),
                     },
                     success: function(response) {
-                        window.location.reload();
+                        console.log('Data Updated');
+                        $('#message').html('Cart Updated successfully.');
                     }
                 });
             });
@@ -98,6 +99,8 @@
                             id: ele.parents('tr').attr('data-id')
                         },
                         success: function(response) {
+                            console.log('Data Updated');
+                            ele.parents('tr').remove();
                             window.location.reload();
                         }
                     });

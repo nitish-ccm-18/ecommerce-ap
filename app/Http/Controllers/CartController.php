@@ -8,7 +8,7 @@ use Session;
 class CartController extends Controller
 {
     // Add to cart
-    public function add($id)
+    public function add(Request $request,$id)
     {
         // find product
         $product = Product::find($id);
@@ -22,9 +22,9 @@ class CartController extends Controller
                 'id' => $product->id,
                 'name' => $product->name,
                 'category' => $product->category->name,
-                'price' => $product->price,
+                'price' => $product->sale_price,
                 'image' => $product->image,
-                'quantity' => 1
+                'quantity' => $request->input('quantity')
             ];
         }
         Session::put('cart',$cart);
@@ -52,7 +52,6 @@ class CartController extends Controller
                 unset($cart[$request->id]);
                 session()->put('cart', $cart);
             }
-            session()->flash('success', 'Product removed successfully');
         }
     }
 }

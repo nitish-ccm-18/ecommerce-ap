@@ -43,15 +43,15 @@
 
                     <p>{{ $product->description}}</p>
 
-                    <form class="d-flex justify-content-left">
+                    <form action="/cart/add/{{ $product->id }}" class="d-flex justify-content-left">
                         <!-- Default input -->
                         <div class="form-outline me-1" style="width: 100px;">
-                            <input type="number" value="1" class="form-control" />
+                            <input type="number" value="1" min="1" class="form-control" name="quantity" />
                         </div>
-                        <a href="/cart/add/{{ $product->id }}" class="btn btn-primary ms-1">
+                        <button type="submit" class="btn btn-primary ms-1">
                             Add to cart
                             <i class="fas fa-shopping-cart ms-1"></i>
-                        </a>
+                        </button>
                     </form>
                 </div>
                 <!--Content-->

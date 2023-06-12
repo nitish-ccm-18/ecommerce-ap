@@ -24,7 +24,7 @@ class VendorController extends Controller
         $category_count = $categories->count();
 
         $orders =  DB::select('SELECT * FROM `orders` join orderdetails on orders.id = orderdetails.order_id 
-        join products on orderdetails.product_id = products.id');
+        join addresses on orders.address_id = addresses.id join users on orders.user_id = users.id');
 
         $coupons = Coupon::all();
 

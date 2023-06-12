@@ -36,7 +36,7 @@ class CouponController extends Controller
             'discount_value' => $request->coupon_value
         ]);
 
-        return $request->input();
+        return redirect('/vendors/dashboard');
     }
 
     public function deactiveCoupon($coupon_id)
@@ -45,5 +45,21 @@ class CouponController extends Controller
         $coupon->update([
             'status' => 'inactive'
         ]);
+    }
+
+    public function validateCoupon(Request $request) {
+        $request->validate([
+            'coupon_code' => 'required'
+        ]);
+        $coupon = Coupon::where('code', $request->coupon_code)->whereDate('expiry','>',Date('y-m-d'))->get();
+
+        if($coupon->first()) {
+            $type = $coupon[0]->discount_type;
+            $discount = $coupon[0]->discount_value;
+            $code = $coupon[0]->code;
+            return redirect()->back()->with('type',$type)->with('discount',$discount)->with('code',$code)->with('coupon_id',$coupon[0]->id);
+        } 
+        else return redirect()->back()->with('warning','Invalid Coupon Code.');
+        
     }
 }

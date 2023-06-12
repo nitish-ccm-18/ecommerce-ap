@@ -7,7 +7,6 @@
 
 @section('content')
 <h1 class="text-center">Create Coupon Form</h1>
-{{ $errors }}
 <form action="/coupons/store" method="POST" class="form-control">
     @csrf
     <div class="mb-3">
