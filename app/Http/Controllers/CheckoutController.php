@@ -26,7 +26,7 @@ class CheckoutController extends Controller
         if(Session::get('cart')) {
             $order = Order::create([
                 'user_id' => Auth::id(),
-                'total_price' => $request->total_price,
+                'total_price' => Session::get('total'),
                 'address_id' => $request->address_id,
                 'coupon_id' => $request->coupon_id
             ]);
@@ -44,6 +44,8 @@ class CheckoutController extends Controller
             
 
             Session::forget('cart');
+            Session::forget('coupon');
+            Session::forget('total');
             print_r($order);
             echo $request->coupon_id;
             return redirect('/')->with('success','Shop More,Enjoy More');

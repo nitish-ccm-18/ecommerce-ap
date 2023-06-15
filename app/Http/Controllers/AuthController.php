@@ -25,10 +25,12 @@ class AuthController extends Controller
             $request->session()->regenerate();
  
             if(Auth::user()->type == 'user') {
-                return redirect('/users/dashboard')->with('success','You are logged in as user');
+                Alert('Logged in','You are logged in as a user.');
+                return redirect('/users/dashboard');
             }
             else {
-                return redirect('/vendors/dashboard')->with('success','You are logged in as vendor');
+                Alert('Logged in','You are logged in as a Vendor.');
+                return redirect('/vendors/dashboard');
             }
         }
         return back()->withErrors([
@@ -43,7 +45,7 @@ class AuthController extends Controller
         
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect('/')->with('success','Logout successfully.');
+        Alert('Logout Successfully','You are redirecting to Homepage');
+        return redirect('/');
     }
 }

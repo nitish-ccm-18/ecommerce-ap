@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
 use Auth;
+use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
 {
@@ -35,9 +36,10 @@ class UserController extends Controller
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
-            return redirect('/login');
+            Alert('User registered','You are redirecting to your dashboard.');
+            return redirect('/login'); 
         }
-        return redirect('/login')->with('success','User created successfully.');
+       
     }
 
 
@@ -71,6 +73,7 @@ class UserController extends Controller
         User::where('id',$id)->update([
             'name' => $request->input('name'),
         ]);  
+          Alert('Profile Updated','Your profile details are updated successfully.');
          return redirect('/users/profile');
     }
     

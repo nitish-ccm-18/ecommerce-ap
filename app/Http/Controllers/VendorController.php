@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Coupon;
+use App\Models\Order;
 use DB;
 
 class VendorController extends Controller
@@ -22,15 +23,26 @@ class VendorController extends Controller
 
         $categories = Category::all();
         $category_count = $categories->count();
+        $order_count = Order::all()->count();
+        $coupon_count = Coupon::all()->count();
 
-        $orders =  DB::select('SELECT * FROM `orders` join orderdetails on orders.id = orderdetails.order_id 
-        join addresses on orders.address_id = addresses.id join users on orders.user_id = users.id');
+        $orders =  DB::select('SELECT 
+        orders.id as order_id,
+        users.id as user_id,
+        users.name as user_name,
+        total_price,
+        CONCAT(line1,", ",line2,", ",state,", ",pincode) as address
+        FROM `orders` 
+        join addresses on orders.address_id = addresses.id join users on orders.user_id = users.id order by orders.created_at desc');
+        
 
         $coupons = Coupon::all();
 
         return view('vendor.dashboard',[
             "products" => $products,
             "product_count"=>$product_count,
+            'order_count' => $order_count,
+            'coupon_count' => $coupon_count,
             "categories" => $categories,
             'category_count'=>$category_count,
             "orders" => $orders,

@@ -7,54 +7,66 @@
 
 @section('content')
     <h1 class="text-center">Welcome to Vendor Dashboard</h1>
-    <div class="d-flex justify-content-between">
-        <div>
-            <h2>Product Count{{ $product_count }}</h2>
-            <ul>
-                @foreach ($products as $product)
-                    <li>{{ $product->name }}</li>
-                @endforeach
-            </ul>
+    <div class="row justify-content-center">
+        <div class="card text-white bg-primary mb-3 mx-1 text-center" style="max-width: 18rem;">
+            <div class="card-header">Product Count</div>
+            <div class="card-body">
+              <h5 class="card-title ">Total {{ $product_count }}</h5>
+            </div>
         </div>
-        <div>
-            <h2>Category Count{{ $category_count }}</h2>
-            <ul>
-                @foreach ($categories as $category)
-                    <li>{{ $category->name }}</li>
-                @endforeach
-            </ul>
+        <div class="card text-white bg-primary mb-3 mx-1 text-center" style="max-width: 18rem;">
+            <div class="card-header">Category Count</div>
+            <div class="card-body">
+              <h5 class="card-title ">Total {{ $category_count }}</h5>
+            </div>
+        </div>
+    
+        <div class="card text-white bg-primary mb-3 mx-1 text-center" style="max-width: 18rem;">
+            <div class="card-header">Orders Count</div>
+            <div class="card-body">
+              <h5 class="card-title ">Total {{ $order_count }}</h5>
+            </div>
+        </div>
+    
+        <div class="card text-white bg-primary mb-3 mx-1 text-center" style="max-width: 18rem;">
+            <div class="card-header">Coupon Count</div>
+            <div class="card-body">
+              <h5 class="card-title ">Total {{ $coupon_count }}</h5>
+            </div>
         </div>
     </div>
+      
 
     <a href="/products/create" class="btn btn-primary btn-sm">+ Products</a>
     <div class="row">
         <table class="table" id="products_table">
             <thead>
                 <tr>
+                    <th class="text-center">Image</th>
                     <th class="text-center">Name</th>
                     <th class="text-center">Quantity</th>
                     <th class="text-center">Weight</th>
                     <th class="text-center">Price</th>
+                    <th></th>
                     <th class="text-center">Status</th>
-                    <th class="text-center">Image</th>
+                    <th class="text-center">Featured</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($products as $product)
                     <tr>
+                        <td><img src="{{ url('public/Image/Products/' . $product->image) }}" alt="" width="100"
+                                height="100"></td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->quantity }}</td>
                         <td>{{ $product->weight }}</td>
-                        <td>{{ $product->price }}</td>
-                        <td>{{ $product->status ? 'Active' : 'Inactive' }}</td>
-                        <td><img src="{{ url('public/Image/Products/' . $product->image) }}" alt="" width="100"
-                                height="100"></td>
+                        <td>$ {{ $product->price }}</td>
                         <td>
-                            <a href="/vendors/product/{{ $product->id }}" class="btn btn-success">Show</a>
-                            <a href="/products/edit/{{ $product->id }}" class="btn btn-warning">Edit</a>
-                        <td><a href="/products/status/edit/{{ $product->id }}"
-                                class="btn {{ $product->status ? 'btn-success' : 'btn-danger' }}">{{ $product->status ? 'Active' : 'Inactive' }}</a>
+                            <a href="/vendors/product/{{ $product->id }}" class="btn btn-success"><i class="fa-regular fa-eye"></i></a>
+                            <a href="/products/edit/{{ $product->id }}" class="btn btn-warning"><i class="fa-sharp fa-solid fa-user-pen"></i></a>
+                        <td><a href="/products/status/edit/{{ $product->id }}" class="text-lg"><i class="fa-solid fa-toggle-{{ $product->status ? 'on' : 'off' }} fa-2xl"></i></a>
                         </td>
+                        <td><a href="/products/feature/edit/{{ $product->id }}" class="text-lg"><i class="fa-solid fa-toggle-{{ $product->featured ? 'on' : 'off' }} fa-2xl"></i></a></td>
                     </tr>
                 @endforeach
             </tbody>
@@ -69,17 +81,17 @@
                     <th scope="col">Name</th>
                     <th></th>
                     <th></th>
-                    <th scope="col">Status <small class="text-muted">Press Button to change status</small></th>
+                    <th scope="col">Status</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($categories as $category)
                     <tr>
                         <td>{{ $category->name }}</td>
-                        <td><a href="/categories/{{ $category->id }}" class="btn btn-primary btn-sm">Show</a></td>
-                        <td><a href="/categories/edit/{{ $category->id }}" class="btn btn-primary btn-sm">Edit</a></td>
+                        <td><a href="/categories/{{ $category->id }}" class="btn btn-primary btn-sm"><i class="fa-regular fa-eye"></i></a></td>
+                        <td><a href="/categories/edit/{{ $category->id }}" class="btn btn-primary btn-sm"><i class="fa-sharp fa-solid fa-user-pen"></i></a></td>
                         <td><a href="/categories/status/edit/{{ $category->id }}"
-                                class="btn {{ $category->status ? 'btn-success' : 'btn-danger' }}">{{ $category->status ? 'Active' : 'Inactive' }}</a>
+                                class=""><i class="fa-solid fa-toggle-{{ $category->status ? 'on' : 'off' }} fa-2xl"></i></a>
                         </td>
                     </tr>
                 @endforeach
@@ -96,7 +108,7 @@
             <div class="card  mb-3" style="max-width: 18rem;">
                 <div class="card-header">{{ $item->code }}</div>
                 <div class="card-body text-primary">
-                    <h5 class="card-title">{{ $item->discount_value }} {{ $item->discount_type === 'fixed' ? "Rs" : "%" }}</h5>
+                    <h5 class="card-title">{{ $item->discount_value }} {{ $item->discount_type === 'fixed' ? "$" : "%" }}</h5>
                     <p class="card-text">{{ $item->description }}</p>
                     <p class="cart-text">Expire On {{ $item->expiry }}</p>
                 </div>
@@ -114,21 +126,21 @@
             <tr>
                 <th scope="col">Order ID</th>
                 <th scope="col">User Name</th>
-                <th scope="col">Order Id</th>
+                <th scope="col">Order Total</th>
+                <th scope="col">Delivery Address</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($orders as $id => $order)
+            @foreach ($orders as $order)
                 <tr>
-                    <td><a href="">{{ $order->id }}</a></td>
-                    <td><a href="">{{ $order->name }}</a></td>
-                    <td>{{ $order->total_price }}</td>
+                    <td><a href="/vendors/order/{{$order->order_id }}">{{ $order->order_id }}</a></td>
+                    <td><a href="/users/{{$order->user_id}}">{{ $order->user_name }}</a></td>
+                    <td>$ {{ $order->total_price }}</td>
                     <td>
-                        {{ $order->line1 . ',' . $order->line2 .  ',' . $order->state . ',' . $order->pincode }}
+                        {{ $order->address }}
                     </td>
                 </tr>
             @endforeach
-
         </tbody>
     </table>
 @endsection

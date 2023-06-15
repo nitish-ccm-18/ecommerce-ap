@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<span id="coupon_status"></span>
     {{-- Saving Current User Details --}}
     @php
         $user = Auth::user();
@@ -15,14 +16,6 @@
         @php $total += $details['price'] * $details['quantity'] @endphp
     @endforeach
 
-    @if (session('discount'))
-        {{-- Discount Calculation --}}
-        @if (session('type') === 'fixed')
-            @php $total = $total- session('discount') @endphp
-        @else
-            @php $total = $total- ($total*session('discount'))/100 @endphp
-        @endif
-    @endif
 
 
     <!--Main layout-->
@@ -48,7 +41,7 @@
 
                     <!--email-->
                     <p class="mb-0">
-                        Email (optional)
+                        Email
                     </p>
                     <div class="form-outline mb-4">
                         <input type="email" class="form-control" placeholder="youremail@example.com"
@@ -59,8 +52,8 @@
                         @csrf
 
 
-                        <input type="number" name="coupon_id" value='{{ session('coupon_id') }}'>
-                        <input type="hidden" name="total_price" value="{{ $total }}">
+                        <input type="hidden" name="coupon_id" value="{{ session()->has('coupon') ? session()->get('coupon')['id'] : '' }}">
+                        <input type="hidden" name="total_price" value="{{ $total }}" id="total_checkout_value">
                         <div class="form-outline mb-4">
                             <select name="address_id" id="" class="form-control" required>
                                 <option value="">Choose Your Address</option>
@@ -100,37 +93,35 @@
                                 <h6 class="my-0">{{ $details['name'] }}</h6>
                                 <span class="text-muted">NOS : {{ $details['quantity'] }}</span>
                             </div>
-                            <small class="text-muted">${{ $details['price'] }}</small>
+                            <small class="text-muted">$ {{ $details['price'] }}</small>
                         </li>
                     @endforeach
 
                     {{-- If coupon is valid --}}
-                    @if (session('discount'))
-                        {{ session('discount') }}
-                        <li class="list-group-item d-flex justify-content-between bg-light">
+                        <li class="list-group-item d-flex justify-content-between bg-light d-none" id="coupon_card">
+                            {{-- <small>Discount <span id="coupon_value"></span>  <span id="coupon_type"></span>  </small> --}}
                             <div class="text-success">
                                 <h6 class="my-0">Promo code</h6>
-                                <small>Discount {{ session('discount') }} {{ session('type') == 'fixed' ? 'Rs' : '%' }}
-                                </small>
+                                <small>Discount <span id="coupon_value"></span>  <span id="coupon_type"></span>  </small>
                             </div>
-                            <span class="text-success">{{ session('code') }}</span>
+                            <span class="text-success" id="coupon_code"></span>
+                            <button type="button" class="btn" id="remove_coupon"><i class="fa-solid fa-minus"></i></button>
                         </li>
-                    @endif
 
                     <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (USD)</span>
-                        <strong>${{ $total }}</strong>
+                        <span >Total (USD)</span>
+                            <strong id="total_order_value"></strong>
                     </li>
                 </ul>
                 <!-- Cart -->
 
                 <!-- Promo code -->
-                <form method="POST" action="/coupons/validate" class="card p-2">
+                <form method="POST" action="/coupons/validate" class="card p-2" id="coupon_code_input">
                     @csrf
                     <div class="input-group mb-3">
                         <input type="text" class="form-control" placeholder="Promo code" aria-label="Promo code"
-                            aria-describedby="button-addon2" id="coupon_code" name="coupon_code" />
-                        <button class="btn btn-primary" id="coupon_code_btn" type="submit" data-mdb-ripple-color="dark">
+                            aria-describedby="button-addon2" id="coupon-code" name="coupon_code" />
+                        <button class="btn btn-primary" id="apply_coupon" type="button" data-mdb-ripple-color="dark">
                             Reedem
                         </button>
                     </div>
@@ -143,4 +134,71 @@
     </div>
     </main>
     <!--Main layout-->
+    @push('head')
+        <script>
+            $( document ).ready(function() {
+                checkCoupon();
+            });
+
+            // Function to check coupon is applied or not
+            function checkCoupon(){
+                $.ajax({
+                    method : 'get',
+                    url : '/coupon/check',
+                    success : function(response) {
+                           if(response.coupon_code) {
+                                console.log(response)
+                               $('#coupon_card').removeClass('d-none');
+                               $('#coupon_value').html(response.coupon_value);
+                               $('#coupon_code').html(response.coupon_code);
+                               $('#coupon_type').html(response.coupon_type == 'fixed' ? '$' : '%');
+                               $('#coupon_code_input').addClass('d-none');
+                           }
+                           $('#total_order_value').html("$ "+response.total);
+                    }
+                })
+            }
+
+            // Function to add coupon
+            $("#apply_coupon").click(function(e){
+               
+                $.ajax({
+                    method : 'post',
+                    url : '/coupons/validate',
+                    data : {
+                        _token : "{{ csrf_token()}}",
+                        coupon_code : $('#coupon-code').val(),
+                    },
+                    success : function(response) {
+                        if(response.status == 'COUPON_INVALID') {
+                            $('#coupon_status').html('Invalid Coupon');
+                        }else {
+                            checkCoupon();
+                            $('#coupon_status').html('Coupon Applied');
+                        }
+                    }
+                });
+            });
+
+            // Function to remove coupon
+            $('#remove_coupon').click(function(e){
+                $.ajax({
+                    method : 'get',
+                    url : '/coupon/remove',
+                    success : function(response){
+                        console.log(response.COUPON_STATUS)
+                        console.log("COUPON_DELETED")
+                        if(response.COUPON_STATUS == 'COUPON_DELETED') {
+                            $('#total_order_value').html(response.total);
+                            $('#coupon_code_input').removeClass('d-none');
+                            $('#coupon_card').addClass('d-none');
+                            $('#coupon_status').html('Coupon Deleted');
+                        }else {
+                            $('#coupon_status').html('Techincal Error');
+                        }
+                    }
+                })
+            });
+        </script>
+    @endpush
 @endsection

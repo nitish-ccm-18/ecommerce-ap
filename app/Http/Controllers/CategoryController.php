@@ -35,6 +35,7 @@ class CategoryController extends Controller
             'description' => $request->category_description,
             'status' => TRUE
         ]);
+        Alert('Created Successfully','New category created successfully.');
         return redirect('/categories');
     }
 
@@ -68,6 +69,7 @@ class CategoryController extends Controller
         $category->description = $request->category_description;
         $category->save();
 
+        Alert('Updated Successfully','Category updated successfully.');
         return redirect('/categories');
     }
 
@@ -85,6 +87,7 @@ class CategoryController extends Controller
         Category::find($id)->update(
             ['status' => $status ]
         );
+        Alert('Status Changed','Category status created successfully.');
         return redirect('/vendors/dashboard');
     }
    

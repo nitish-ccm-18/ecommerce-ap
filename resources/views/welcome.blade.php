@@ -6,6 +6,7 @@
 
 
 @section('content')
+    <span id="cart"></span>
     <nav class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 shadow p-2" style="background-color: #607D8B">
         <!-- Container wrapper -->
         <div class="container-fluid">
@@ -13,14 +14,9 @@
             <!-- Navbar brand -->
             <a class="navbar-brand" href="#">Categories:</a>
 
-            <!-- Toggle button -->
-            <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent2"
-                aria-controls="navbarSupportedContent2" aria-expanded="false" aria-label="Toggle navigation">
-                <i class="fas fa-bars"></i>
-            </button>
 
             <!-- Collapsible wrapper -->
-            <div class="collapse navbar-collapse overflow-auto" id="navbarSupportedContent2">
+            <div class="navbar-collapse overflow-auto" id="">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
 
                     <!-- Link -->
@@ -33,12 +29,6 @@
                         </li>
                     @endforeach
                 </ul>
-
-                <!-- Search -->
-                <form class="w-auto py-1" style="max-width: 12rem">
-                    <input type="search" class="form-control rounded-0" placeholder="Search" aria-label="Search">
-                </form>
-
             </div>
         </div>
         <!-- Container wrapper -->
@@ -47,18 +37,22 @@
 
     <!-- Products -->
     <section>
+        <div class="alert d-none" id="add_to_cart_msg">
+            <strong>Success!</strong> Item added to cart
+        </div>
         <div class="text-center">
-            <div class="row">
-                @foreach ($products as $product)
-                    <div class="col-lg-3 col-md-6 mb-4">
+            <div class="row justify-content-center" id="ProductViewer">
+                @foreach ($products as $id => $product)
+                    <div class="col-lg-3 col-md-6 mb-4" data-id="{{ $product->id }}">
                         <div class="card">
                             <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                                 data-mdb-ripple-color="light">
-                                <img src="{{ url('public/Image/Products/' . $product->image) }}" class="w-100" />
+                                <img src="{{ url('public/Image/Products/' . $product->image) }}" width="200px"
+                                    height="200px" />
                                 <a href="#!">
                                     <div class="mask">
                                         <div class="d-flex justify-content-start align-items-end h-100">
-                                            <h5><span class="badge bg-dark ms-2">NEW</span></h5>
+                                            <h5><span class="badge bg-dark ms-2">{{$product->featured ? "Featured" : ""}}</span></h5>
                                         </div>
                                     </div>
                                     <div class="hover-overlay">
@@ -73,30 +67,88 @@
                                 <a href="" class="text-reset ">
                                     <p>{{ $product->category->name }}</p>
                                 </a>
-                                <h6 class="mb-3 price">{{ $product->price }}</h6>
+                                <div class="mb-3">
+                                    <span class=" price">$ {{ $product->sale_price }}</span>
+                                     <del class="text-muted">{{ $product->price }}</del>
+                                </div>
+                                <button type="button" class="btn btn-success addtocart" data-product-id={{ $product->id }}><i class="fa-solid fa-cart-plus "></i></button>
                             </div>
                         </div>
                     </div>
+                   
                 @endforeach
-
+                <div class="d-flex justify-content-center mt-3">
+                    {{ $products->links() }}
+                </div>
             </div>
-            <nav aria-label="Page navigation example" class="d-flex justify-content-center mt-3">
-              <ul class="pagination">
-                <li class="page-item disabled">
-                  <a class="page-link" href="#" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                  </a>
-                </li>
-                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                  </a>
-                </li>
-              </ul>
-            </nav>  
+
+            <div class="container">
+                <span id="subscriber_status"></span>
+                <div class="d-flex" id="subscriber_email_input">
+                    <input type="text" class="form-control" name="subscriber_email" placeholder="Enter your email" id="SubscriberEmail">
+                    <button type="button" id="SubsribeBtn">subscribe</button>
+                </div>
+            </div>
+
+            @push('head')
+            <script>
+                $( document ).ready(function() {
+                    getCartCount();
+                });
+
+                $('#SubsribeBtn').click(function(e){
+                    $.ajax({
+                        method : 'POST',
+                        url : '{{ route('subscribe') }}',
+                        data : {
+                            _token : "{{ csrf_token() }}",
+                            subscriber_email : $('#SubscriberEmail').val()
+                        },
+                        success : function(response) {
+                            $('#subscriber_status').html(response);
+                            $('#subscriber_email_input').remove();
+                        }
+                    });
+                })
+
+
+                $('.addtocart').click(function(e){
+                    e.preventDefault();
+                    var product_id = $(this).attr('data-product-id');
+                    
+                    $.ajax({
+                        url : '{{ route('cart.store') }}',
+                        method : 'post',
+                        data : {
+                            _token : '{{ csrf_token() }}',
+                            product_id : product_id
+                        },
+                        success : function(response) {
+                            $('#add_to_cart_msg')
+                            .addClass('alert-success')
+                            .removeClass('d-none')
+
+                            setTimeout(() => {
+                                $('#add_to_cart_msg').addClass('d-none');
+                            }, 2000);
+                            getCartCount();
+                        }
+                    });
+                });
+
+                function getCartCount(){
+                    
+                    $.ajax({
+                        url : '{{ route('cart.count') }}',
+                        method : 'get',
+                        success : function(response) {
+                            console.log(response);
+                            $('#cart').html(response);
+                        }
+                    });
+                }
+
+            </script>
+            @endpush
+
         @endsection

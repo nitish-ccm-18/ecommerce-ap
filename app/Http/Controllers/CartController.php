@@ -7,38 +7,31 @@ use App\Models\Product;
 use Session;
 class CartController extends Controller
 {
-    // Add to cart
-    public function add(Request $request,$id)
-    {
-        // find product
-        $product = Product::find($id);
-
-        $cart = Session::get('cart', []);
-        // check if given product is exist in the cart or not
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        }else {
-            $cart[$id] = [
-                'id' => $product->id,
-                'name' => $product->name,
-                'category' => $product->category->name,
-                'price' => $product->sale_price,
-                'image' => $product->image,
-                'quantity' => $request->input('quantity')
-            ];
-        }
-        Session::put('cart',$cart);
-        return redirect('/')->with('success','Product added to cart');
-    }
 
     // update in cart
     public function update(Request $request)
     {
+        $product = Product::find($request->id);
         if($request->id && $request->quantity){
             $cart = session()->get('cart');
             $cart[$request->id]["quantity"] = $request->quantity;
+            $subtotal = $request->quantity * $product->sale_price;
+
+            $total = 0;
+            // calculate total
+            foreach($cart as $item) {
+                $total += $item['price'] * $item['quantity'];
+            }
+        
+
             session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
+            session()->put('total', $total);
+            Session::forget('coupon');
+            return array(
+                'quantity' => $cart[$request->id]['quantity'],
+                'subtotal' => $subtotal,
+                'total' => $total
+            );
         }
     }
   
@@ -49,9 +42,11 @@ class CartController extends Controller
         if($request->id) {
             $cart = session()->get('cart');
             if(isset($cart[$request->id])) {
+                $total = session()->get('total') - $cart[$request->id]['price']*$cart[$request->id]['quantity'];
                 unset($cart[$request->id]);
                 session()->put('cart', $cart);
             }
+            Alert('Removed Successfully','Item from cart removed successfully.');
         }
     }
 }

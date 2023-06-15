@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Orderdetail;
 use App\Models\Coupon;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\AjaxController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
@@ -19,6 +20,7 @@ use App\Http\Controllers\SweetAlertController;
 use App\Http\Controllers\CouponController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +35,7 @@ use App\Http\Controllers\CheckoutController;
 
 // Home Controller
 Route::get('/{category?}', [HomeController::class,'index'])->where('category', '[0-9]+');
+Route::post('/subscribe', [HomeController::class,'subscribe'])->name('subscribe');
 
 // Users Route
 Route::view('/users/register','users.register');
@@ -75,6 +78,8 @@ Route::middleware(['auth','isVendor'])->group(function () {
     Route::post('/products/edit/', [ProductController::class,'edit']);
 
     Route::get('/products/status/edit/{id}', [ProductController::class,'changeStatus']);
+    Route::get('/products/feature/edit/{id}', [ProductController::class,'markFeaturedProduct']);
+    
 
 
     Route::get('/coupons/create',[CouponController::class,'create']);
@@ -154,4 +159,31 @@ Route::get('fetch-orders', function() {
 Route::redirect('/home','/');
 
 Route::post('/coupons/validate', [CouponController::class,'validateCoupon']);
+
+Route::get('/vendors/order/{id}',[OrderController::class,'singleOrderViewer']);
+
+Route::post('/cart/store', [AjaxController::class,'add_to_cart'])->name('cart.store');
+Route::get('/cart/count', [AjaxController::class,'countCartItems'])->name('cart.count');
+
+Route::get('/coupon/check',[CouponController::class,'checkCoupon']);
+
+Route::get('/session/cart', function(){
+    $session_data = Session::all();
+    echo "<pre>";
+    print_r($session_data);
+    echo "</pre>";
+
+    // foreach($cart_products as $product) {
+    //     // print_r($product);
+    //     echo gettype($product);
+       
+    // }
+
+    // Session::flush();
+});
+
+
+Route::get('/coupon/remove',[CouponController::class,'removeCoupon']);
+
+
 

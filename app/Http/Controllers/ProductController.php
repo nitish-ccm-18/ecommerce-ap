@@ -28,7 +28,7 @@ class ProductController extends Controller
         // validate data
         $request->validate([
             'category_id' => 'required',
-            'product_name' => 'required | max:10',
+            'product_name' => 'required ',
             'product_description' => 'required',
             'product_price' => 'required',
             'product_sale_price' => 'required',
@@ -53,6 +53,7 @@ class ProductController extends Controller
             'featured' => False,
             'image' => $image_filename
         ]);
+        Alert('Created Successfully','New product created successfully.');
         return redirect('/products');
     }
 
@@ -149,7 +150,7 @@ class ProductController extends Controller
                 'weight' => $request->product_weight
             ]);
         }
-        
+        Alert('Updated Successfully','Product updated successfully.');
         return redirect('/products/'.$request->id);
     }
 
@@ -160,6 +161,16 @@ class ProductController extends Controller
     $status =  (int) $status== 0 ? 1 : 0;
     Product::find($id)->update(
         ['status' => $status ]
+    );
+    return redirect('/vendors/dashboard');
+}
+
+   // change status
+   public function markFeaturedProduct($id) {
+    $isFeatured = Product::find($id)->featured;
+    $isFeatured =  (int) $isFeatured== 0 ? 1 : 0;
+    Product::find($id)->update(
+        ['featured' => $isFeatured ]
     );
     return redirect('/vendors/dashboard');
 }

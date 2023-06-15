@@ -12,17 +12,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <title> @yield('title') </title>
-
 </head>
 
 <body>
-
     @include('layouts.header')
 
     <div class="container-fluid">
-        @include('flash-message')
         @yield('content')
     </div>
 
@@ -33,6 +29,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     @stack('head')
+    @include('sweetalert::alert')
 </body>
 
 </html>

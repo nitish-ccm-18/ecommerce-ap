@@ -1,0 +1,96 @@
+User 
+----------------------------------
+User_ID
+User_Type : [User,Vendor]
+First Name
+Last Name
+UserName
+Email 
+Phone
+Password
+Avatar
+Address_ID
+
+
+Category
+----------------------------------
+Category_ID 
+Name
+Description
+Picture
+
+Product_Inventory
+---------------------------------
+id
+quantity
+
+
+
+
+
+Product
+------------------------------------
+id
+name
+desc
+sku
+category_id : Foreign Key(Category.id)
+inventory_id : Foreign Key(ProductInventory.id)
+price,
+discount_id : Foreign(Discount.id)
+
+
+Discount 
+-------------------------------------
+id
+name
+desc
+discount_percent
+active
+
+
+Address
+------------------------------------
+Adress_ID
+User_ID : Foreign Key(User.id)
+Line1
+Line2
+City
+State
+Zipcode
+Tag
+
+
+Order
+------------------------------------
+Order_ID 
+User_ID : Foreign Key(User.id)
+Address_ID : Foreign Key(Address.id)
+TotalValue
+CouponID
+Discount
+
+
+OrderDetails
+------------------------------------
+Orderdetail_ID
+Product_id
+Quantity
+Price
+UserID
+OrderStatus
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
