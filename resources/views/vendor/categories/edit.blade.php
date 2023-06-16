@@ -1,13 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
-   Edit Product Category | GetProduct 
+   Edit Category | Vendor Dashboard 
 @endsection
 
 
 @section('content')
 <h1 class="text-center">Edit Category Form</h1>
-<form action="/categories/edit" method="POST" class="form-control">
+<form action="/vendor/categories/edit" method="POST" class="form-control">
     @csrf
     <input type="hidden" name="id" value="{{ $category->id }}">
     <div class="mb-3">

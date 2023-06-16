@@ -20,7 +20,7 @@ class CreateCouponsTable extends Migration
             $table->date('from');
             $table->date('expiry');
             $table->tinyInteger('limit')->default(1);
-            $table->tinyInteger('usage')->nullable();
+            $table->tinyInteger('usage')->nullable(0);
             $table->string('discount_type');
             $table->decimal('discount_value',6,2);
             $table->timestamps();

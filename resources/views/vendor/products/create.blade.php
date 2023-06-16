@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
     Create Product | GetProduct
@@ -7,7 +7,7 @@
 
 @section('content')
     <h1 class="text-center">Create Product Form</h1>
-    <form action="/products/create" method="POST" class="form-control" enctype="multipart/form-data">
+    <form action="/vendor/products/create" method="POST" class="form-control" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <select class="form-select form-select mb-3" name="category_id" id="categories">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
    Welcome | GetProduct 
@@ -19,8 +19,8 @@
         <tr>
             <td>{{ $category->name }}</td>
             <td>{{ $category->status == 0 ? "Inactive" : "Active" }}</td>
-            <td><a href="/categories/{{ $category->id }}" class="btn btn-primary btn-sm">Show</a></td>
-            <td><a href="/categories/edit/{{ $category->id }}" class="btn btn-primary btn-sm">Edit</a></td>
+            <td><a href="/vendor/categories/{{ $category->id }}" class="btn btn-primary btn-sm">Show</a></td>
+            <td><a href="/vendor/categories/edit/{{ $category->id }}" class="btn btn-primary btn-sm">Edit</a></td>
           </tr>
         @endforeach
     </tbody>

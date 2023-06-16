@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
     Welcome | GetProduct

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
    Create Coupon | GetProduct 
@@ -6,8 +6,8 @@
 
 
 @section('content')
-<h1 class="text-center">Create Coupon Form</h1>
-<form action="/coupons/store" method="POST" class="form-control">
+<h3 class="text-center">Create Coupon Form</h3>
+<form action="/vendor/coupons/store" method="POST" class="form-control">
     @csrf
     <div class="mb-3">
         <label for="CouponCode" class="form-label">Coupon Code</label>
@@ -22,13 +22,13 @@
             <label for="CouponDescription">From</label>
             <input type="date" class="form-control" id="CouponCode" name="valid_from">
         </div>
-        <div class="mb-3">
+        <div class="mb-3 mx-2">
             <label for="CouponDescription"></label>
             <input type="date" class="form-control" id="CouponCode" name="valid_till">
         </div>
     </div>
     <div class="d-flex justify-content-start">
-        <div class="mb-3 mx-3">
+        <div class="mb-3">
             <label for="CouponType">Discount Type</label>
            <select id="" class="form-control" name="coupon_type">
             <option>Select Coupon Type</option>
@@ -36,7 +36,7 @@
             <option value="fixed">Fixed Coupon</option>
            </select>
         </div>
-        <div class="mb-3">
+        <div class="mb-3 mx-2">
             <label for="CouponValue">Discount Value</label>
             <input type="number" class="form-control" id="CouponValue" name="coupon_value">
         </div>

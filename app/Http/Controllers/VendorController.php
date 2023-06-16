@@ -11,21 +11,26 @@ use DB;
 
 class VendorController extends Controller
 {
-    // Login Page
-    public function login() {
-        return view('vendor.login');
+    // Get all categories
+    public function listCategories() {
+        $categories = Category::all();
+        return view('vendor.listCategories',['categories'=>$categories]);
     }
 
-    // Dashboard page
-    public function dashboard() {
+    // Get all categories
+    public function listProducts() {
         $products = Product::all();
-        $product_count = $products->count();
+        return view('vendor.listProducts',['products'=>$products]);
+    }
 
-        $categories = Category::all();
-        $category_count = $categories->count();
-        $order_count = Order::all()->count();
-        $coupon_count = Coupon::all()->count();
+    // Get all categories
+    public function listCoupons() {
+        $coupons = Coupon::all();
+        return view('vendor.listCoupons',['coupons'=>$coupons]);
+    }
 
+    // Get all orders
+    public function listOrders() {
         $orders =  DB::select('SELECT 
         orders.id as order_id,
         users.id as user_id,
@@ -34,19 +39,26 @@ class VendorController extends Controller
         CONCAT(line1,", ",line2,", ",state,", ",pincode) as address
         FROM `orders` 
         join addresses on orders.address_id = addresses.id join users on orders.user_id = users.id order by orders.created_at desc');
-        
+        return view('vendor.listOrders',['orders'=>$orders]);
+    }
 
-        $coupons = Coupon::all();
+    // Login Page
+    public function login() {
+        return view('vendor.login');
+    }
+
+    // Dashboard page
+    public function dashboard() {
+        $product_count = Product::all()->count();
+        $category_count = Category::all()->count();
+        $order_count = Order::all()->count();
+        $coupon_count = Coupon::all()->count();
 
         return view('vendor.dashboard',[
-            "products" => $products,
-            "product_count"=>$product_count,
-            'order_count' => $order_count,
-            'coupon_count' => $coupon_count,
-            "categories" => $categories,
             'category_count'=>$category_count,
-            "orders" => $orders,
-            "coupons" => $coupons
+            "product_count"=>$product_count,
+            'coupon_count' => $coupon_count,
+            'order_count' => $order_count,
         ]);
     }
 

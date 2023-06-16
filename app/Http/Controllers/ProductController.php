@@ -54,7 +54,7 @@ class ProductController extends Controller
             'image' => $image_filename
         ]);
         Alert('Created Successfully','New product created successfully.');
-        return redirect('/products');
+        return redirect('/vendor/products');
     }
 
     // Display the specified product
@@ -151,7 +151,7 @@ class ProductController extends Controller
             ]);
         }
         Alert('Updated Successfully','Product updated successfully.');
-        return redirect('/products/'.$request->id);
+        return redirect('/vendor/products/'.$request->id);
     }
 
 
@@ -162,63 +162,20 @@ class ProductController extends Controller
     Product::find($id)->update(
         ['status' => $status ]
     );
-    return redirect('/vendors/dashboard');
+    Alert('Status Changed','Product status updated successfully.');
+    return redirect('/vendor/products');
 }
 
-   // change status
+   // make product as featured product
    public function markFeaturedProduct($id) {
     $isFeatured = Product::find($id)->featured;
     $isFeatured =  (int) $isFeatured== 0 ? 1 : 0;
     Product::find($id)->update(
         ['featured' => $isFeatured ]
     );
-    return redirect('/vendors/dashboard');
+    Alert('Featured status changed','Product featured status updated successfully.');
+    return redirect('/vendor/products');
 }
 
-
-
-public function addToCart($id)
-    {
-        $product = Product::findOrFail($id);
-          
-        $cart = session()->get('cart', []);
-  
-        if(isset($cart[$id])) {
-            $cart[$id]['quantity']++;
-        } else {
-            $cart[$id] = [
-                "name" => $product->name,
-                "quantity" => 1,
-                "price" => $product->price,
-                "image" => $product->image
-            ];
-        }
-          
-        session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Product added to cart successfully!');
-    }
-
-
-    public function update(Request $request)
-    {
-        if($request->id && $request->quantity){
-            $cart = session()->get('cart');
-            $cart[$request->id]["quantity"] = $request->quantity;
-            session()->put('cart', $cart);
-            session()->flash('success', 'Cart updated successfully');
-        }
-    }
-
-    public function remove(Request $request)
-    {
-        if($request->id) {
-            $cart = session()->get('cart');
-            if(isset($cart[$request->id])) {
-                unset($cart[$request->id]);
-                session()->put('cart', $cart);
-            }
-            session()->flash('success', 'Product removed successfully');
-        }
-    }
 
 }

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
     Edit Product | GetProduct
@@ -6,9 +6,8 @@
 
 
 @section('content')
-    {{ $errors }}
     <h1 class="text-center">Edit Product Form</h1>
-    <form action="/products/edit" method="POST" class="form-control" enctype="multipart/form-data">
+    <form action="/vendor/products/edit" method="POST" class="form-control" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="id" value="{{ $product->id }}">
         <div class="mb-3">
@@ -30,6 +29,9 @@
                     <input type="text" class="form-control" aria-label="Amount ()" name="product_price"
                         value="{{ $product->price }}">
                 </div>
+                @error('product_price')
+                <span class="text-danger">{{ $message }}</span>
+                 @enderror
             </div>
             <div class="col">
                 <label for="ProductName" class="form-label">Sale Price</label>
@@ -38,6 +40,9 @@
                     <input type="text" class="form-control" aria-label="Amount ()" name="product_sale_price"
                         value="{{ $product->sale_price }}">
                 </div>
+                @error('product_sale_price')
+                <span class="text-danger">{{ $message }}</span>
+            @enderror
             </div>
         </div>
         <div class="row mb-3">
@@ -45,11 +50,17 @@
                 <label for="ProductName" class="form-label">Quantity</label>
                 <input type="number" class="form-control" placeholder="i.e 10" name="product_quantity"
                     value="{{ $product->quantity }}">
+                    @error('product_quantity')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
             <div class="col">
                 <label for="ProductName" class="form-label">Weight</label>
                 <input type="number" class="form-control" placeholder="i.e 10 KG" name="product_weight"
                     value="{{ $product->weight }}">
+                    @error('product_weight')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
             </div>
         </div>
         <div class="row mb-3">
@@ -63,7 +74,10 @@
         </div>
         <div class="form-floating mb-3">
             <textarea class="form-control" name="product_description" id="ProductDescription" style="height: 100px">{{ $product->description }}</textarea>
-            <label for="ProductDescription">Comments</label>
+            <label for="ProductDescription">Description</label>
+            @error('product_description')
+            <span class="text-danger">{{ $message }}</span>
+        @enderror
         </div>
         <div class="mb-3">
             <button type="submit" class="btn btn-primary form-control">Edit</button>
@@ -85,7 +99,6 @@
                     success: function(data) {
                         // Store Current Selected choice id
                         categoryID = $('#categories:first-child').val();
-                        $('#categories').append('<option>Select category</option>');
                         data.forEach($category => {
                             if ($category.id == categoryID) {
                                 $('#categories').append(

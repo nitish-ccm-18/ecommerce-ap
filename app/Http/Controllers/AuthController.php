@@ -30,7 +30,7 @@ class AuthController extends Controller
             }
             else {
                 Alert('Logged in','You are logged in as a Vendor.');
-                return redirect('/vendors/dashboard');
+                return redirect('/vendor/dashboard');
             }
         }
         return back()->withErrors([

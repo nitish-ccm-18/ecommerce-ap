@@ -36,7 +36,7 @@ class CategoryController extends Controller
             'status' => TRUE
         ]);
         Alert('Created Successfully','New category created successfully.');
-        return redirect('/categories');
+        return redirect('/vendor/categories');
     }
 
     // Display the specified resource
@@ -70,7 +70,7 @@ class CategoryController extends Controller
         $category->save();
 
         Alert('Updated Successfully','Category updated successfully.');
-        return redirect('/categories');
+        return redirect('/vendor/categories');
     }
 
 
@@ -88,7 +88,7 @@ class CategoryController extends Controller
             ['status' => $status ]
         );
         Alert('Status Changed','Category status created successfully.');
-        return redirect('/vendors/dashboard');
+        return redirect('/vendor/categories');
     }
    
 }

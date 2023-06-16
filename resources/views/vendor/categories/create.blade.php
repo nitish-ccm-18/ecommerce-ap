@@ -1,13 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.vendor.main')
 
 @section('title')
-   Create Product Category | GetProduct 
+    Add Category | Vendor Dashboard
 @endsection
 
 
 @section('content')
 <h1 class="text-center">Create Category Form</h1>
-<form action="/categories/create" method="POST" class="form-control">
+<form action="/vendor/categories/create" method="POST" class="form-control">
     @csrf
     <div class="mb-3">
         <label for="CategoryName" class="form-label">Category Name</label>

@@ -32,11 +32,12 @@ class CouponController extends Controller
             'description' => $request->coupon_description,
             'from' => $request->valid_from,
             'expiry' => $request->valid_till,
+            'usage' => 0,
             'discount_type' => $request->coupon_type,
             'discount_value' => $request->coupon_value
         ]);
 
-        return redirect('/vendors/dashboard');
+        return redirect('/vendor/dashboard');
     }
 
     public function deactiveCoupon($coupon_id)
@@ -52,7 +53,6 @@ class CouponController extends Controller
         $request->validate(['coupon_code' => 'required' ]);
 
         $coupon = Coupon::where('code', $request->coupon_code)->whereDate('expiry','>',Date('y-m-d'))->get();
-
         // If Coupon is valid
         if($coupon->first()) {
             $type = $coupon[0]->discount_type;
@@ -103,10 +103,10 @@ class CouponController extends Controller
     public function removeCoupon() {
         $total = Session::get('total');
         $total = $total +  (int)Session::get('discount');
-
         Session::forget('coupon');
         Session::forget('discount');
         Session::put('total',$total);
+
         return array(
             'COUPON_STATUS' => 'COUPON_DELETED',
             'total' => $total

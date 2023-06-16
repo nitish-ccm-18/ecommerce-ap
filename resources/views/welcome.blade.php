@@ -23,11 +23,14 @@
                     <li class="nav-item acitve">
                         <a class="nav-link text-white" href="/">All</a>
                     </li>
-                    @foreach ($categories as $category)
-                        <li class="nav-item">
-                            <a href="/{{ $category->id }}" class="nav-link text-white">{{ $category->name }}</a>
-                        </li>
-                    @endforeach
+                    @isset($categories)
+                        @foreach ($categories as $category)
+                            <li class="nav-item">
+                                <a href="/{{ $category->id }}" class="nav-link text-white">{{ $category->name }}</a>
+                            </li>
+                        @endforeach
+                    @endisset
+
                 </ul>
             </div>
         </div>
@@ -42,113 +45,121 @@
         </div>
         <div class="text-center">
             <div class="row justify-content-center" id="ProductViewer">
-                @foreach ($products as $id => $product)
-                    <div class="col-lg-3 col-md-6 mb-4" data-id="{{ $product->id }}">
-                        <div class="card">
-                            <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
-                                data-mdb-ripple-color="light">
-                                <img src="{{ url('public/Image/Products/' . $product->image) }}" width="200px"
-                                    height="200px" />
-                                <a href="#!">
-                                    <div class="mask">
-                                        <div class="d-flex justify-content-start align-items-end h-100">
-                                            <h5><span class="badge bg-dark ms-2">{{$product->featured ? "Featured" : ""}}</span></h5>
+                @if($products && $products->isNotEmpty())
+                    @foreach ($products as $id => $product)
+                        <div class="col-lg-3 col-md-6 mb-4" data-id="{{ $product->id }}">
+                            <div class="card">
+                                <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
+                                    data-mdb-ripple-color="light">
+                                    <img src="{{ url('public/Image/Products/' . $product->image) }}" width="200px"
+                                        height="200px" />
+                                    <a href="#!">
+                                        <div class="mask">
+                                            <div class="d-flex justify-content-start align-items-end h-100">
+                                                <h5><span
+                                                        class="badge bg-dark ms-2">{{ $product->featured ? 'Featured' : '' }}</span>
+                                                </h5>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="hover-overlay">
-                                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-                                    </div>
-                                </a>
-                            </div>
-                            <div class="card-body">
-                                <a href="/products/{{ $product->id }}" class="text-reset">
-                                    <h5 class="card-title mb-2">{{ $product->name }}</h5>
-                                </a>
-                                <a href="" class="text-reset ">
-                                    <p>{{ $product->category->name }}</p>
-                                </a>
-                                <div class="mb-3">
-                                    <span class=" price">$ {{ $product->sale_price }}</span>
-                                     <del class="text-muted">{{ $product->price }}</del>
+                                        <div class="hover-overlay">
+                                            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                                        </div>
+                                    </a>
                                 </div>
-                                <button type="button" class="btn btn-success addtocart" data-product-id={{ $product->id }}><i class="fa-solid fa-cart-plus "></i></button>
+                                <div class="card-body">
+                                    <a href="/products/{{ $product->id }}" class="text-reset">
+                                        <h5 class="card-title mb-2">{{ $product->name }}</h5>
+                                    </a>
+                                    <a href="" class="text-reset ">
+                                        <p>{{ $product->category->name }}</p>
+                                    </a>
+                                    <div class="mb-3">
+                                        <span class=" price">$ {{ $product->sale_price }}</span>
+                                        <del class="text-muted">{{ $product->price }}</del>
+                                    </div>
+                                    <button type="button" class="btn btn-success addtocart"
+                                        data-product-id={{ $product->id }}><i class="fa-solid fa-cart-plus "></i></button>
+                                </div>
                             </div>
                         </div>
+                    @endforeach
+                    <div class="d-flex justify-content-center mt-3">
+                        {{ $products->links() }}
                     </div>
-                   
-                @endforeach
-                <div class="d-flex justify-content-center mt-3">
-                    {{ $products->links() }}
-                </div>
+                @else
+                    <div class="d-flex justify-content-center mt-3">
+                        No Product available
+                    </div>
+                @endif
             </div>
 
             <div class="container">
                 <span id="subscriber_status"></span>
                 <div class="d-flex" id="subscriber_email_input">
-                    <input type="text" class="form-control" name="subscriber_email" placeholder="Enter your email" id="SubscriberEmail">
+                    <input type="text" class="form-control" name="subscriber_email" placeholder="Enter your email"
+                        id="SubscriberEmail">
                     <button type="button" id="SubsribeBtn">subscribe</button>
                 </div>
             </div>
 
             @push('head')
-            <script>
-                $( document ).ready(function() {
-                    getCartCount();
-                });
-
-                $('#SubsribeBtn').click(function(e){
-                    $.ajax({
-                        method : 'POST',
-                        url : '{{ route('subscribe') }}',
-                        data : {
-                            _token : "{{ csrf_token() }}",
-                            subscriber_email : $('#SubscriberEmail').val()
-                        },
-                        success : function(response) {
-                            $('#subscriber_status').html(response);
-                            $('#subscriber_email_input').remove();
-                        }
+                <script>
+                    $(document).ready(function() {
+                        getCartCount();
                     });
-                })
+
+                    $('#SubsribeBtn').click(function(e) {
+                        $.ajax({
+                            method: 'POST',
+                            url: '{{ route('subscribe') }}',
+                            data: {
+                                _token: "{{ csrf_token() }}",
+                                subscriber_email: $('#SubscriberEmail').val()
+                            },
+                            success: function(response) {
+                                $('#subscriber_status').html(response);
+                                $('#subscriber_email_input').remove();
+                            }
+                        });
+                    })
 
 
-                $('.addtocart').click(function(e){
-                    e.preventDefault();
-                    var product_id = $(this).attr('data-product-id');
-                    
-                    $.ajax({
-                        url : '{{ route('cart.store') }}',
-                        method : 'post',
-                        data : {
-                            _token : '{{ csrf_token() }}',
-                            product_id : product_id
-                        },
-                        success : function(response) {
-                            $('#add_to_cart_msg')
-                            .addClass('alert-success')
-                            .removeClass('d-none')
+                    $('.addtocart').click(function(e) {
+                        e.preventDefault();
+                        var product_id = $(this).attr('data-product-id');
 
-                            setTimeout(() => {
-                                $('#add_to_cart_msg').addClass('d-none');
-                            }, 2000);
-                            getCartCount();
-                        }
+                        $.ajax({
+                            url: '{{ route('cart.store') }}',
+                            method: 'post',
+                            data: {
+                                _token: '{{ csrf_token() }}',
+                                product_id: product_id
+                            },
+                            success: function(response) {
+                                $('#add_to_cart_msg')
+                                    .addClass('alert-success')
+                                    .removeClass('d-none')
+
+                                setTimeout(() => {
+                                    $('#add_to_cart_msg').addClass('d-none');
+                                }, 2000);
+                                getCartCount();
+                            }
+                        });
                     });
-                });
 
-                function getCartCount(){
-                    
-                    $.ajax({
-                        url : '{{ route('cart.count') }}',
-                        method : 'get',
-                        success : function(response) {
-                            console.log(response);
-                            $('#cart').html(response);
-                        }
-                    });
-                }
+                    function getCartCount() {
 
-            </script>
+                        $.ajax({
+                            url: '{{ route('cart.count') }}',
+                            method: 'get',
+                            success: function(response) {
+                                console.log(response);
+                                $('#cart').html(response);
+                            }
+                        });
+                    }
+                </script>
             @endpush
 
         @endsection

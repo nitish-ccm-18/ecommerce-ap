@@ -55,36 +55,7 @@ Route::get('/users/profile', [UserController::class, 'showProfile']);
 
 // Routes for only vendor
 Route::middleware(['auth','isVendor'])->group(function () {
-    Route::get('/vendors/dashboard',[VendorController::class,'dashboard']);
     
-    // Category Routes 
-    Route::get('/categories/create', [CategoryController::class,'create']);
-    Route::post('/categories/create', [CategoryController::class,'store']);
-
-    Route::get('/categories/{id}',[CategoryController::class,'show'])->whereNumber('id');
-
-    Route::get('/categories/edit/{id}', [CategoryController::class,'editPage']);
-    Route::post('/categories/edit', [CategoryController::class,'edit']);
-
-    Route::get('/categories/status/edit/{id}', [CategoryController::class,'changeStatus']);
-
-    // Product Route
-    Route::get('/products/create', [ProductController::class,'create']);
-    Route::post('/products/create', [ProductController::class,'store']);
-
-    Route::get('/vendors/product/{id}',[ProductController::class,'showSingleProduct']);
-
-    Route::get('/products/edit/{id}', [ProductController::class,'editPage']);
-    Route::post('/products/edit/', [ProductController::class,'edit']);
-
-    Route::get('/products/status/edit/{id}', [ProductController::class,'changeStatus']);
-    Route::get('/products/feature/edit/{id}', [ProductController::class,'markFeaturedProduct']);
-    
-
-
-    Route::get('/coupons/create',[CouponController::class,'create']);
-    Route::post('/coupons/store',[CouponController::class,'store']);
-
 });
 
 
@@ -160,30 +131,68 @@ Route::redirect('/home','/');
 
 Route::post('/coupons/validate', [CouponController::class,'validateCoupon']);
 
-Route::get('/vendors/order/{id}',[OrderController::class,'singleOrderViewer']);
+
 
 Route::post('/cart/store', [AjaxController::class,'add_to_cart'])->name('cart.store');
 Route::get('/cart/count', [AjaxController::class,'countCartItems'])->name('cart.count');
 
 Route::get('/coupon/check',[CouponController::class,'checkCoupon']);
 
-Route::get('/session/cart', function(){
-    $session_data = Session::all();
-    echo "<pre>";
-    print_r($session_data);
-    echo "</pre>";
-
-    // foreach($cart_products as $product) {
-    //     // print_r($product);
-    //     echo gettype($product);
-       
-    // }
-
-    // Session::flush();
-});
 
 
 Route::get('/coupon/remove',[CouponController::class,'removeCoupon']);
 
 
 
+// Route::prefix('/vendor')->group(function(){
+    
+// });
+
+Route::group(['prefix'=>'vendor', 'middleware' => ['auth','isVendor']], function() {
+
+    // Vendor Dashboard Pages
+    Route::get('/dashboard',[VendorController::class,'dashboard']);
+    Route::get('/categories',[VendorController::class,'listCategories']);
+    Route::get('/products',[VendorController::class,'listProducts']);
+    Route::get('/coupons',[VendorController::class,'listCoupons']);
+    Route::get('/orders',[VendorController::class,'listOrders']);
+    Route::get('/orders/{id}',[OrderController::class,'singleOrderViewer']);
+
+    
+    // Category Routes 
+    Route::get('/categories/create', [CategoryController::class,'create']);
+    Route::post('/categories/create', [CategoryController::class,'store']);
+
+    Route::get('/categories/{id}',[CategoryController::class,'show'])->whereNumber('id');
+
+    Route::get('/categories/edit/{id}', [CategoryController::class,'editPage']);
+    Route::post('/categories/edit', [CategoryController::class,'edit']);
+
+    Route::get('/categories/status/edit/{id}', [CategoryController::class,'changeStatus']);
+
+    // Product Route
+    Route::get('/products/create', [ProductController::class,'create']);
+    Route::post('/products/create', [ProductController::class,'store']);
+
+    Route::get('/products/{id}',[ProductController::class,'showSingleProduct']);
+
+    Route::get('/products/edit/{id}', [ProductController::class,'editPage']);
+    Route::post('/products/edit/', [ProductController::class,'edit']);
+
+    Route::get('/products/status/edit/{id}', [ProductController::class,'changeStatus']);
+    Route::get('/products/feature/edit/{id}', [ProductController::class,'markFeaturedProduct']);
+    
+
+
+    Route::get('/coupons/create',[CouponController::class,'create']);
+    Route::post('/coupons/store',[CouponController::class,'store']);
+
+});
+
+
+Route::get('/users/orders/{id}',[OrderController::class,'userSingleOrderViewer'])->middleware('auth');
+
+
+Route::get('/test',function() {
+    echo $name;
+});
