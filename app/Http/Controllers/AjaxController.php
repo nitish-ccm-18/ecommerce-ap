@@ -23,6 +23,7 @@ class AjaxController extends Controller
         // check if given product is exist in the cart or not
         if(isset($cart[$product_id])) {
             $cart[$product_id]['quantity']++;
+            $cart[$product_id]['subtotal'] += $product->sale_price;
         }else {
             $cart[$product_id] = [
                 'id' => $product->id,
@@ -30,7 +31,8 @@ class AjaxController extends Controller
                 'category' => $product->category->name,
                 'price' => $product->sale_price,
                 'image' => $product->image,
-                'quantity' => 1
+                'quantity' => 1,
+                'subtotal' => $product->sale_price
             ];
         }
         // calculate total

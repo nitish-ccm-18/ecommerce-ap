@@ -1,5 +1,5 @@
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg">
     <!-- Container wrapper -->
     <div class="container">
         <!-- Toggle button -->
@@ -16,8 +16,8 @@
             </a>
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item active">
-                    <a class="nav-link " href="/">Home</a>
+                <li class="nav-item ">
+                    <a class="nav-link {{ (request()->is('/')) ? 'active' : ''}}" href="/">Home</a>
                 </li>
                 @if (Auth::check())
                     <li class="nav-item dropdown">
@@ -36,9 +36,12 @@
                         </ul>
                     </li>
                 @else
-                <a class="nav-link" href="/login">
-                    <i class="fa-solid fa-right-to-bracket"></i> Login
-                </a>
+                <li class="nav-item ">
+                    <a class="nav-link {{ (request()->is('login')) ? 'active' : '' }}" href="/login">
+                        Login
+                    </a>
+                </li>
+                
                 @endif
                 </li>
             </ul>

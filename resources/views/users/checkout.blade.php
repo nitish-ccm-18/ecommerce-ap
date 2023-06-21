@@ -5,7 +5,8 @@
 @endsection
 
 @section('content')
-<span id="coupon_status"></span>
+<div class="alert alert-info d-none" id="coupon_status">
+</div>
     {{-- Saving Current User Details --}}
     @php
         $user = Auth::user();
@@ -99,7 +100,6 @@
 
                     {{-- If coupon is valid --}}
                         <li class="list-group-item d-flex justify-content-between bg-light d-none" id="coupon_card">
-                            {{-- <small>Discount <span id="coupon_value"></span>  <span id="coupon_type"></span>  </small> --}}
                             <div class="text-success">
                                 <h6 class="my-0">Promo code</h6>
                                 <small>Discount <span id="coupon_value"></span>  <span id="coupon_type"></span>  </small>
@@ -146,6 +146,7 @@
                     method : 'get',
                     url : '/coupon/check',
                     success : function(response) {
+                        console.log(response)
                            if(response.coupon_code) {
                                 console.log(response)
                                $('#coupon_card').removeClass('d-none');
@@ -170,12 +171,17 @@
                         coupon_code : $('#coupon-code').val(),
                     },
                     success : function(response) {
+                        $('#coupon_status').removeClass('d-none');
                         if(response.status == 'COUPON_INVALID') {
                             $('#coupon_status').html('Invalid Coupon');
                         }else {
                             checkCoupon();
                             $('#coupon_status').html('Coupon Applied');
                         }
+
+                        setTimeout(() => {
+                            $('#coupon_status').addClass('d-none');
+                        }, 1000);
                     }
                 });
             });

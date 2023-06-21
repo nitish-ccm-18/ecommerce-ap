@@ -93,6 +93,10 @@ Route::get('/login', [AuthController::class,'login'])->name('login');
 Route::post('/authenticate',[AuthController::class,'authenticate']);
 Route::get('/logout',[AuthController::class,'logout']);
 
+Route::post('/password/reset',[AuthController::class,'sendPasswordResetMail']);
+
+Route::view('forgot-password','forgot-password');
+
 Route::get('/cart/add/{id}', [CartController::class,'add']);
 
 Route::patch('/cart/update', [CartController::class,'update'])->name('cart.update');
@@ -189,10 +193,13 @@ Route::group(['prefix'=>'vendor', 'middleware' => ['auth','isVendor']], function
 
 });
 
-
+Route::get('/user/orders',[OrderController::class,'orders']);
 Route::get('/users/orders/{id}',[OrderController::class,'userSingleOrderViewer'])->middleware('auth');
 
 
-Route::get('/test',function() {
-    echo $name;
+Route::get('/my-orders',[UserController::class,'myOrders']);
+
+
+Route::geT('/session-test',function(){
+    return Session::all();
 });

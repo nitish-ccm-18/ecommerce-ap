@@ -6,8 +6,9 @@
 
 
 @section('content')
-    <h1 class="text-center">Edit Product Form</h1>
-    <form action="/vendor/products/edit" method="POST" class="form-control" enctype="multipart/form-data">
+<div class="container-fluid">
+    <h3 class="text-center">Edit Product Form</h3>
+    <form action="/vendor/products/edit" method="POST" enctype="multipart/form-data">
         @csrf
         <input type="hidden" name="id" value="{{ $product->id }}">
         <div class="mb-3">
@@ -83,6 +84,7 @@
             <button type="submit" class="btn btn-primary form-control">Edit</button>
         </div>
     </form>
+</div>
 
 
     @push('head')

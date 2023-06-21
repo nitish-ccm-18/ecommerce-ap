@@ -7,7 +7,7 @@
 
 @section('content')
     <span id="cart"></span>
-    <nav class="navbar navbar-expand-lg navbar-dark mt-3 mb-5 shadow p-2" style="background-color: #607D8B">
+    <nav class="navbar navbar-expand-lg navbar-light mt-3 mb-5 ">
         <!-- Container wrapper -->
         <div class="container-fluid">
 
@@ -21,12 +21,12 @@
 
                     <!-- Link -->
                     <li class="nav-item acitve">
-                        <a class="nav-link text-white" href="/">All</a>
+                        <a class="nav-link" href="/">All</a>
                     </li>
                     @isset($categories)
                         @foreach ($categories as $category)
                             <li class="nav-item">
-                                <a href="/{{ $category->id }}" class="nav-link text-white">{{ $category->name }}</a>
+                                <a href="/{{ $category->id }}" class="nav-link">{{ $category->name }}</a>
                             </li>
                         @endforeach
                     @endisset
@@ -44,10 +44,10 @@
             <strong>Success!</strong> Item added to cart
         </div>
         <div class="text-center">
-            <div class="row justify-content-center" id="ProductViewer">
+            <div class="row" id="ProductViewer">
                 @if($products && $products->isNotEmpty())
                     @foreach ($products as $id => $product)
-                        <div class="col-lg-3 col-md-6 mb-4" data-id="{{ $product->id }}">
+                        <div class="col-lg-2 col-md-2 mb-4 shadow-lg" data-id="{{ $product->id }}">
                             <div class="card">
                                 <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                                     data-mdb-ripple-color="light">
@@ -86,9 +86,9 @@
                     <div class="d-flex justify-content-center mt-3">
                         {{ $products->links() }}
                     </div>
-                @else
+                    @else
                     <div class="d-flex justify-content-center mt-3">
-                        No Product available
+                        <h3 class="text-center">Products will be uploaded soon.</h3>
                     </div>
                 @endif
             </div>
@@ -104,9 +104,7 @@
 
             @push('head')
                 <script>
-                    $(document).ready(function() {
-                        getCartCount();
-                    });
+                    
 
                     $('#SubsribeBtn').click(function(e) {
                         $.ajax({
@@ -148,17 +146,7 @@
                         });
                     });
 
-                    function getCartCount() {
-
-                        $.ajax({
-                            url: '{{ route('cart.count') }}',
-                            method: 'get',
-                            success: function(response) {
-                                console.log(response);
-                                $('#cart').html(response);
-                            }
-                        });
-                    }
+                    
                 </script>
             @endpush
 

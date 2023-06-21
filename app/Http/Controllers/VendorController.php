@@ -31,15 +31,7 @@ class VendorController extends Controller
 
     // Get all orders
     public function listOrders() {
-        $orders =  DB::select('SELECT 
-        orders.id as order_id,
-        users.id as user_id,
-        users.name as user_name,
-        total_price,
-        CONCAT(line1,", ",line2,", ",state,", ",pincode) as address
-        FROM `orders` 
-        join addresses on orders.address_id = addresses.id join users on orders.user_id = users.id order by orders.created_at desc');
-        return view('vendor.listOrders',['orders'=>$orders]);
+        $orders = Order::with('orderdetails.products.category,coupon')->get();
     }
 
     // Login Page

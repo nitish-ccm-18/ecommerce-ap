@@ -51,10 +51,11 @@ class CouponController extends Controller
     public function validateCoupon(Request $request) {
 
         $request->validate(['coupon_code' => 'required' ]);
-
+        
         $coupon = Coupon::where('code', $request->coupon_code)->whereDate('expiry','>',Date('y-m-d'))->get();
+        
         // If Coupon is valid
-        if($coupon->first()) {
+        if($coupon->first() && $coupon[0]->usage < $coupon[0]->limit) {
             $type = $coupon[0]->discount_type;
             $discount = $coupon[0]->discount_value;
             $code = $coupon[0]->code;

@@ -47,7 +47,7 @@
                                 <span class="subtotal">$ {{ $product['price'] * $product['quantity'] }}</span>
                             </td>
                             <td class="actions" data-th="">
-                                <button class="btn btn-danger btn-sm remove-cart">Remove</button>
+                                <button class="btn btn-outline-danger btn-sm remove-cart">Remove</button>
                             </td>
                         </tr>
                     @endforeach
@@ -56,13 +56,13 @@
 
                 </tbody>
             </table>
-            <div class="d-flex justify-content-between">
+            <div class="sticky-bottom d-flex justify-content-between bg-dark p-5 text-white">
                  <div>
                     <h3 >Total : $ <span id="totalprice">{{ $total }}</span></h3>
                  </div>
                  <div>
-                    <a href="/" class="btn btn-warning ">&lt;&lt;Continue Shoppping</a>
-                    <a href="/checkout" class="btn btn-primary">Checkout</a>
+                    <a href="/" class="btn btn-outline-warning ">&lt;&lt;Continue Shoppping</a>
+                    <a href="/checkout" class="btn btn-outline-primary text-white">Checkout</a>
                  </div>
             </div>
         

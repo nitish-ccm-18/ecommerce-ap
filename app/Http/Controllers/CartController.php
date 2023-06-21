@@ -16,6 +16,7 @@ class CartController extends Controller
             $cart = session()->get('cart');
             $cart[$request->id]["quantity"] = $request->quantity;
             $subtotal = $request->quantity * $product->sale_price;
+            $cart[$request->id]['subtotal'] = $subtotal;
 
             $total = 0;
             // calculate total

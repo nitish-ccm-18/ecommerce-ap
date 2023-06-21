@@ -6,11 +6,12 @@
 
 
 @section('content')
-    <h1 class="text-center">Create Product Form</h1>
-    <form action="/vendor/products/create" method="POST" class="form-control" enctype="multipart/form-data">
+<div class="container-fluid">
+    <h3 class="text-center">Create Product Form</h3>
+    <form action="/vendor/products/create" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
-            <select class="form-select form-select mb-3" name="category_id" id="categories">
+            <select class="form-control form-select mb-3" name="category_id" id="categories">
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                 @endforeach
@@ -20,7 +21,7 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="ProductName" class="form-label">Full Name</label>
+            <label for="ProductName" class="form-label">Product Name</label>
             <input type="text" class="form-control" id="ProductName" name="product_name">
             @error('product_name')
                 <span class="text-danger">{{ $message }}</span>
@@ -84,6 +85,7 @@
             <button type="submit" class="btn btn-primary form-control">Create</button>
         </div>
     </form>
+</div>
 
 
     @push('head')

@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    // list all products
+    // list all products and their category
     public function index(string $category = null)
     {
         $products = false;
@@ -21,17 +21,17 @@ class HomeController extends Controller
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->get(['products.*', 'categories.status']);
             if($products->isNotEmpty()){
-                $products = $products->toQuery()->paginate(3);
+                $products = $products->toQuery()->paginate(6);
             }
             // Get all active status
             return view('welcome', ['products' => $products, 'categories' => $categories]);
         }
 
         // All product with active status and category status
-        if (count($categories) > 0) {
+        if (count(Product::all()) > 0) {
             $products = Product::where(['products.status' => 1, 'categories.status' => 1])
                 ->join('categories', 'products.category_id', '=', 'categories.id')
-                ->get(['products.*', 'categories.status'])->toQuery()->paginate(3);
+                ->get(['products.*', 'categories.status'])->toQuery()->paginate(6);
         }
 
         return view('welcome', ['products' => $products, 'categories' => $categories]);

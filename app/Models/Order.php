@@ -18,6 +18,15 @@ class Order extends Model
 
     // One to Many with Orderdetail Model
     public function orderdetails() {
-        return $this->hasMany(Orderdetail::class);
+        return $this->hasMany(Orderdetail::class,'order_id','id');
+    }
+
+    public function user() {
+        return $this->belongsTo(User::class,'user_id','id');
+    }
+
+    // One to Many with Orderdetail Model
+    public function coupon() {
+        return $this->belongsTo(Coupon::class,'coupon_id','id');
     }
 }

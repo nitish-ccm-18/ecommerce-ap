@@ -17,4 +17,13 @@ class Address extends Model
         'pincode',
         'tag'
     ];
+
+    public function getFullAddressAttribute() {
+        return $this->line1.",".$this->line2.",".$this->state.",".$this->pincode."(".$this->tag.")";
+    }
+
+
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
 }

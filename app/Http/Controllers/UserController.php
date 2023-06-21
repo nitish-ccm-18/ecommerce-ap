@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Hash;
 use Auth;
+use App\Models\Order;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -76,5 +77,7 @@ class UserController extends Controller
           Alert('Profile Updated','Your profile details are updated successfully.');
          return redirect('/users/profile');
     }
+
+    
     
 }

@@ -5,6 +5,7 @@
 @endsection
 
 @section('content')
+<div class="container-fluid">
     <div class="row">
         <img class="col-3" src="{{ url('public/Image/Products/' . $product->image) }}" alt="Product image" height="200px" width="200px">
         <div class="col-6">
@@ -25,4 +26,6 @@
             </p>
         </div>
     </div>
+</div>
+    
 @endsection

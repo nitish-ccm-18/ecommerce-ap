@@ -21,6 +21,8 @@ class Coupon extends Model
     ];
 
     public function orders() {
-        
+        return $this->hasMany(Order::class,'coupon_id','id');
     }
+
+    
 }

@@ -1,45 +1,109 @@
 @extends('layouts.users.main')
 
 @section('title')
-User Dashboard
+    Vendor Dashboard
 @endsection
-@section('content')
-    <h1>Welcome to User Dashboard</h1>
-    @php
-        $orders = DB::select('SELECT 
-        orders.id as order_id,
-        total_price,
-        coupons.code as promocode,
-        CONCAT(line1,", ",line2,", ",state,", ",pincode) as address
-         FROM `orders` 
-         join addresses on orders.address_id = addresses.id 
-         join coupons on orders.coupon_id = coupons.id 
-         where orders.user_id = ?',[Auth::id()]);
-    @endphp
 
-<table class="table">
-    <thead class="thead-dark">
-        <tr>
-            <th scope="col">Order ID</th>
-            <th scope="col">Order Total</th>
-            <th scope="col">Delivery Address</th>
-            <th>Promocode</th>
-            <th scope="col">Show</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ($orders as $order)
-            <tr>
-                <td>{{ $order->order_id }}</td>
-                <td>$ {{ $order->total_price }}</td>
-                <td>{{ $order->address}}</td>
-                <td>{{ $order->promocode }}</td>
-                <td><a href="/users/orders/{{$order->order_id }}" class="btn"><i class="fa-regular fa-eye"></i></a></td>
-            </tr>
-        @endforeach
-        @if (!$orders)
-            <tr><td>You haven't ordered.<a href="/">Shop Here</a></td></tr>
-        @endif
-    </tbody>
-</table>
+
+@section('content')
+<!-- Begin Page Content -->
+<div class="container-fluid">
+                    
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+      <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+      <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+              class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+  </div>
+
+  <!-- Content Row -->
+  {{-- <div class="row">
+
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                              Total Categories</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $category_count }}</div>
+                      </div>
+                      <div class="col-auto">
+                          <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-success shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                              Total Products</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $product_count }}</div>
+                      </div>
+                      <div class="col-auto">
+                          <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Earnings (Monthly) Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-info shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1"> Total Coupons
+                          </div>
+                          <div class="row no-gutters align-items-center">
+                              <div class="col-auto">
+                                  <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{ $coupon_count }}</div>
+                              </div>
+                          </div>
+                      </div>
+                      <div class="col-auto">
+                          <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Pending Requests Card Example -->
+      <div class="col-xl-3 col-md-6 mb-4">
+          <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card-body">
+                  <div class="row no-gutters align-items-center">
+                      <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                              Total Orders</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">{{ $order_count }}</div>
+                      </div>
+                      <div class="col-auto">
+                          <i class="fas fa-comments fa-2x text-gray-300"></i>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div> --}}
+
+  <!-- Content Row -->
+
+
+  <!-- Content Row -->
+  <div class="row">
+  </div>
+
+</div>
+<!-- /.container-fluid -->
+
 @endsection
