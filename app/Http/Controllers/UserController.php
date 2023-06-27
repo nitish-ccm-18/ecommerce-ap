@@ -7,6 +7,7 @@ use App\Models\User;
 use Hash;
 use Auth;
 use App\Models\Order;
+use App\Models\Profile;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class UserController extends Controller
@@ -32,15 +33,18 @@ class UserController extends Controller
         ]);
 
         if($request->password == $request->confirm_password) {
-            User::create([
+            $user = User::create([
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ]);
+            Profile::create([
+                'user_id' => $user->id
+            ]);
             Alert('User registered','You are redirecting to your dashboard.');
             return redirect('/login'); 
         }
-       
+       return back();
     }
 
 
@@ -49,7 +53,7 @@ class UserController extends Controller
     //  Show  User Profile
     public function showProfile(Request $request) {
         // Get Current Authenticated User
-        $user = Auth::user();
+        $user = User::find(Auth::user()->id);
 
         // pass user to their views
         return view('users.profile',['user'=>$user]);
@@ -74,7 +78,7 @@ class UserController extends Controller
         User::where('id',$id)->update([
             'name' => $request->input('name'),
         ]);  
-          Alert('Profile Updated','Your profile details are updated successfully.');
+        Alert('Profile Updated','Your profile details are updated successfully.');
          return redirect('/users/profile');
     }
 

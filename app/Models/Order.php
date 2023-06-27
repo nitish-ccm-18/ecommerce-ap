@@ -25,6 +25,10 @@ class Order extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+    public function address() {
+        return $this->belongsTo(Address::class,'address_id','id');
+    }
+
     // One to Many with Orderdetail Model
     public function coupon() {
         return $this->belongsTo(Coupon::class,'coupon_id','id');

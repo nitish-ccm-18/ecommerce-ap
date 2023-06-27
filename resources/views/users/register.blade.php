@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-   Register | GetProduct 
+   Register 
 @endsection
 
 @push('styles')
@@ -61,9 +61,6 @@
                             <hr>
                         </form>
                         <hr>
-                        <div class="text-center">
-                            <a class="small" href="#">Forgot Password?</a>
-                        </div>
                         <div class="text-center">
                             <a class="small" href="/login">Already have an account? Login!</a>
                         </div>

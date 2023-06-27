@@ -46,12 +46,10 @@
         });
 
         function getCartCount() {
-
             $.ajax({
                 url: '{{ route('cart.count') }}',
                 method: 'get',
                 success: function(response) {
-                    console.log(response);
                     $('#cart').html(response);
                 }
             });

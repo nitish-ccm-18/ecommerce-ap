@@ -52,10 +52,7 @@ class AjaxController extends Controller
     // Get count of cart items
     public function countCartItems(Request $request) 
     {
-        $count = count(Session::get('cart'));
-        if($count < 1){
-        }
-        return count(Session::get('cart'));
+        return Session::get('cart') ? count(Session::get('cart')) : 0;
     }
 
     

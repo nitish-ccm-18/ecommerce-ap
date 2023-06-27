@@ -50,7 +50,6 @@
         <!-- Collapsible wrapper -->
 
         <!-- Right elements -->
-        @if (Auth::check() && Auth::user()->type == 'user')
             <div class="d-flex align-items-center">
                 <!-- Icon -->
                 <a class="nav-link me-3" href="/cart">
@@ -58,11 +57,9 @@
                     <span id="cart"
                         class="badge rounded-pill badge-notification bg-danger"></span>
                 </a>
-
-        <!-- Right elements -->
-
             </div>
-        @endif
+      
+         <!-- Right elements -->
     <!-- Container wrapper -->
 </nav>
 <!-- Navbar ends here -->

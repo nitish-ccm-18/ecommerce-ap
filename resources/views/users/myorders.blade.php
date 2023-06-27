@@ -4,64 +4,56 @@
     My Orders
 @endsection
 
-@section('content')
-<div class="accordion" id="OrderAccordion">
-@foreach ($orders as $id=>$order)
-<div class="accordion-item mb-2">
-    <h2 class="accordion-header" id="Order{{$id}}">
-      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#order-collapse{{$id}}" aria-expanded="true" aria-controls="order-collapse{{$id}}">
-        <div class="row justify-content-start">
-          <span>
-            Order Id : {{$order->id}}
-          </span>
-          <span>
-            Order Value : ${{ $order->total_price}}
-          </span>
-        </div>
-        <div class="row justify-content-start">
-          <span>
-            Coupon Discount : {{  $order->coupon ? $order->coupon->discount_value : '' }} 
-            @isset($order->coupon)
-              {{  $order->coupon && $order->coupon->discount_type == 'fixed' ? '$' : '%' }}
-            @endisset
-          </span>
-          <span>
-            Order Coupon : {{ $order->coupon ? $order->coupon->code : ''}}
-          </span>
-        </div>  
-        <div class="row justify-content-start">
-          <span>
-            Ordered On : {{  Auth::user()->created_at->toDateString() }}
-          </span>
-        </div>    
-      </button>
-    </h2>
-    <div id="order-collapse{{$id}}" class="accordion-collapse collapse" aria-labelledby="Order{{$id}}" data-bs-parent="#OrderAccordion">
-      <div class="accordion-body">
-        <div class="row justify-content-center">
-            @forelse ($order->orderdetails as $orderdetail)
-            <div class="card col-3">
-                <img class="card-img-top" src="{{ url('/public/Image/Products/'.$orderdetail->product->image)}}"  width="50px" height="200px" alt="Card image cap">
-                <div class="card-body">
-                  <h5 class="card-title">{{$orderdetail->product->name }}</h5>
-                  <p class="card-text">{{ $orderdetail->product->category->name }}</p>
-                  <p class="card-text">$
-                      <del>{{$orderdetail->product->price}} </del> 
-                      {{$orderdetail->product->sale_price}}
-                  </p>
-                  <p>Qty {{$orderdetail->quantity}}</p>
-                </div>
-              </div>
-            @endforeach
-          </div>
-        </div>
-      </div>
-    </div>
-    @empty
-    <div class="col">
-      <h3 class="text-center">No Items in the cart <a href="/">Shop Here</a></h3>
-    </div>
-    @endforelse
+@push('styles')
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+@endpush
 
-</div>
-@endsection
+@section('content')
+    <div class="container-fluid">
+        <table class="table" id="table">
+            <thead>
+                <tr>
+                    <th class="text-center">Order ID</th>
+                    <th class="text-center">Order Total</th>
+                    <th class="text-center">Coupon</th>
+                    <th class="text-center">Discount</th>
+                    <th class="text-center">Ordered On</th>
+                    <th class="text-center">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($orders as $id => $order)
+                    <tr class="text-center">
+                        <td>{{ $order->id }}</td>
+                        <td>$ {{ $order->total_price }}</td>
+                        <td>{{ $order->coupon ? $order->coupon->code : 'None' }}</td>
+                        <td>
+                          {{ $order->coupon ? $order->coupon->discount_value : '' }}
+                          @isset($order->coupon)
+                              {{ $order->coupon && $order->coupon->discount_type == 'fixed' ? '$' : '%' }}
+                          @endisset
+                        </td>
+                        <td>{{ $order->created_at->toDateString() }}</td>
+                        <td><a href="/users/order/{{$order->id}}">Show</a></td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+
+    </div>
+    @endsection
+    @push('head')
+        <script src="//code.jquery.com/jquery-1.12.3.js"></script>
+        <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.12/js/dataTables.bootstrap.min.js"></script>
+
+        <script>
+            $(document).ready(function() {
+                $('#table').DataTable({
+                    dom: '<"top"fi>rt<"bottom"p><"clear">',
+                });
+            });
+        </script>
+    @endpush

@@ -31,7 +31,7 @@
             <div class="col">
                 <label for="ProductName" class="form-label">Original Price</label>
                 <div class="input-group">
-                    <span class="input-group-text">Rs</span>
+                    <span class="input-group-text">$</span>
                     <input type="text" class="form-control" aria-label="Amount ()" name="product_price">
                 </div>
                 @error('product_price')
@@ -41,7 +41,7 @@
             <div class="col">
                 <label for="ProductName" class="form-label">Sale Price</label>
                 <div class="input-group">
-                    <span class="input-group-text">Rs</span>
+                    <span class="input-group-text">$</span>
                     <input type="text" class="form-control" aria-label="Amount ()" name="product_sale_price">
                 </div>
                 @error('product_sale_price')

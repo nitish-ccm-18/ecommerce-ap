@@ -5,8 +5,7 @@
 @endsection
 
 @section('content')
-<div class="alert alert-info d-none" id="coupon_status">
-</div>
+
     {{-- Saving Current User Details --}}
     @php
         $user = Auth::user();
@@ -127,6 +126,8 @@
                     </div>
                 </form>
                 <!-- Promo code -->
+                <div class="alert alert-info d-none" id="coupon_status">
+                </div>
             </div>
             <!--Grid column-->
         </div>

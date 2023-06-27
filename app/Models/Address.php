@@ -13,6 +13,7 @@ class Address extends Model
         'user_id',
         'line1',
         'line2',
+        'city',
         'state',
         'pincode',
         'tag'
@@ -21,6 +22,7 @@ class Address extends Model
     public function getFullAddressAttribute() {
         return $this->line1.",".$this->line2.",".$this->state.",".$this->pincode."(".$this->tag.")";
     }
+
 
 
     public function user() {

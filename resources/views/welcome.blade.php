@@ -6,7 +6,6 @@
 
 
 @section('content')
-    <span id="cart"></span>
     <nav class="navbar navbar-expand-lg navbar-light mt-3 mb-5 ">
         <!-- Container wrapper -->
         <div class="container-fluid">
@@ -47,7 +46,7 @@
             <div class="row" id="ProductViewer">
                 @if($products && $products->isNotEmpty())
                     @foreach ($products as $id => $product)
-                        <div class="col-lg-2 col-md-2 mb-4 shadow-lg" data-id="{{ $product->id }}">
+                        <div class="col-lg-2 col-md-2 mb-4" data-id="{{ $product->id }}">
                             <div class="card">
                                 <div class="bg-image hover-zoom ripple ripple-surface ripple-surface-light"
                                     data-mdb-ripple-color="light">
@@ -93,14 +92,14 @@
                 @endif
             </div>
 
-            <div class="container">
+            {{-- <div class="container">
                 <span id="subscriber_status"></span>
                 <div class="d-flex" id="subscriber_email_input">
                     <input type="text" class="form-control" name="subscriber_email" placeholder="Enter your email"
                         id="SubscriberEmail">
                     <button type="button" id="SubsribeBtn">subscribe</button>
                 </div>
-            </div>
+            </div> --}}
 
             @push('head')
                 <script>

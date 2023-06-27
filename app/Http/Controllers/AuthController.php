@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Auth;
 use Illuminate\Support\Facades\Password;
+use Auth;
 
 class AuthController extends Controller
 {
     public function login() {
         if(Auth::check())
             return redirect('/');
-        return view('login');
+        return view('auth.login');
     }
 
     public function authenticate(Request $request ) {
@@ -21,8 +21,11 @@ class AuthController extends Controller
             'password' => ['required'],
         ]);
 
+        $remember_me = $request->has('remember_me') ? true : false; 
+
+        
         // Check user type and redirect them as per their type
-        if (Auth::attempt($credentials)) {
+        if (Auth::attempt($credentials, $remember_me)) {
             $request->session()->regenerate();
  
             if(Auth::user()->type == 'user') {
@@ -50,6 +53,13 @@ class AuthController extends Controller
         return redirect('/');
     }
 
+
+    public function sendEmailForm() {
+        return view('forgot-password');
+    }
+
+
+    
     public function sendPasswordResetMail(Request $request) {
         $request->validate([
             'email' => ['required', 'email'],
@@ -64,4 +74,6 @@ class AuthController extends Controller
                     : back()->withInput($request->only('email'))
                             ->withErrors(['email' => __($status)]);
     }
+   
 }
+

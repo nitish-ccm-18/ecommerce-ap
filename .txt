@@ -1,3 +1,0 @@
-Flow of Coupon
----------------------------------
-1. User should be able to add coupon,

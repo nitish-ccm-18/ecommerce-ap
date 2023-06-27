@@ -51,4 +51,12 @@ class User extends Authenticatable
     public function addresses() {
         return $this->hasMany(Address::class);
     }
+
+    public function getUserPrintAttribute() {
+        return "Name : ".$this->name." and email : ".$this->email; 
+    }
+
+    public function profile() {
+        return $this->hasOne(Profile::class);
+    }
 }

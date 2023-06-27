@@ -21,6 +21,7 @@ use App\Http\Controllers\CouponController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -44,8 +45,8 @@ Route::view('/users/dashboard','users.dashboard');
 
 Route::post('/users/register', [UserController::class,'store']);
 
-Route::get('/users/profile/edit', [UserController::class, 'editProfilePage']);
-Route::post('/users/profile/edit', [UserController::class, 'edit']);
+// Route::get('/users/profile/edit', [UserController::class, 'editProfilePage']);
+// Route::post('/users/profile/edit', [UserController::class, 'edit']);
 
 Route::get('/users/profile', [UserController::class, 'showProfile']);
 
@@ -93,9 +94,6 @@ Route::get('/login', [AuthController::class,'login'])->name('login');
 Route::post('/authenticate',[AuthController::class,'authenticate']);
 Route::get('/logout',[AuthController::class,'logout']);
 
-Route::post('/password/reset',[AuthController::class,'sendPasswordResetMail']);
-
-Route::view('forgot-password','forgot-password');
 
 Route::get('/cart/add/{id}', [CartController::class,'add']);
 
@@ -148,10 +146,6 @@ Route::get('/coupon/remove',[CouponController::class,'removeCoupon']);
 
 
 
-// Route::prefix('/vendor')->group(function(){
-    
-// });
-
 Route::group(['prefix'=>'vendor', 'middleware' => ['auth','isVendor']], function() {
 
     // Vendor Dashboard Pages
@@ -160,7 +154,7 @@ Route::group(['prefix'=>'vendor', 'middleware' => ['auth','isVendor']], function
     Route::get('/products',[VendorController::class,'listProducts']);
     Route::get('/coupons',[VendorController::class,'listCoupons']);
     Route::get('/orders',[VendorController::class,'listOrders']);
-    Route::get('/orders/{id}',[OrderController::class,'singleOrderViewer']);
+    Route::get('/orders/{id}',[OrderController::class,'showOrder']);
 
     
     // Category Routes 
@@ -200,6 +194,72 @@ Route::get('/users/orders/{id}',[OrderController::class,'userSingleOrderViewer']
 Route::get('/my-orders',[UserController::class,'myOrders']);
 
 
-Route::geT('/session-test',function(){
-    return Session::all();
-});
+Route::get('/password/forgot', [AuthController::class,'sendEmailForm']);
+Route::post('/password/forgot', [AuthController::class,'sendPasswordResetMail']);
+
+
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->name('password.request');
+
+
+Route::post('/forgot-password', function (Request $request) {
+    $request->validate(['email' => 'required|email']);
+ 
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+ 
+    return $status === Password::RESET_LINK_SENT
+                ? back()->with(['status' => __($status)])
+                : back()->withErrors(['email' => __($status)]);
+})->name('password.email');
+
+
+Route::get('/reset-password/{token}', function (string $token) {
+    return view('auth.reset-password', ['token' => $token]);
+})->name('password.reset');
+
+
+
+
+
+Route::post('/reset-password', function (Request $request) {
+    $request->validate([
+        'token' => 'required',
+        'email' => 'required|email',
+        'password' => 'required|min:8|confirmed',
+    ]);
+ 
+    $status = Password::reset(
+        $request->only('email', 'password', 'password_confirmation', 'token'),
+        function (User $user, string $password) {
+            $user->forceFill([
+                'password' => Hash::make($password)
+            ])->setRememberToken(Str::random(60));
+ 
+            $user->save();
+        }
+    );
+
+    if($status === Password::PASSWORD_RESET) {
+        Alert('Password changed','Password changed successfully.');
+        return redirect()->route('login')->with('status', 'Your password has been changed.');
+    }
+    return back()->withErrors(['email' => [__($status)]]);
+
+})->name('password.update');
+
+
+Route::get('/test/{id}',[ProfileController::class,'show']);
+
+Route::get('/users/order/{id}', [OrderController::class, 'showOrder']);
+
+Route::view('/test-profile','profile.update');
+
+
+
+Route::get('/profile/{id}',[ProfileController::class,'show'])->whereNumber('id');;
+Route::get('/profile/edit',[ProfileController::class,'edit']);
+
+Route::patch('/profile/update',[ProfileController::class,'update']);

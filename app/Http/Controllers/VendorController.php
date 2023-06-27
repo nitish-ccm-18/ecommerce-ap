@@ -31,7 +31,8 @@ class VendorController extends Controller
 
     // Get all orders
     public function listOrders() {
-        $orders = Order::with('orderdetails.products.category,coupon')->get();
+        $orders = Order::with('orderdetails.product.category','coupon','user','address')->get();
+        return view('vendor.listOrders',['orders'=>$orders]);
     }
 
     // Login Page

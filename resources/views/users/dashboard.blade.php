@@ -1,7 +1,7 @@
 @extends('layouts.users.main')
 
 @section('title')
-    Vendor Dashboard
+    User Dashboard
 @endsection
 
 
