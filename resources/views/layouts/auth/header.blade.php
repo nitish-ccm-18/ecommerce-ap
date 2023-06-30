@@ -1,6 +1,5 @@
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-lg">
-    <!-- Container wrapper -->
     <div class="container">
         <!-- Toggle button -->
         <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarSupportedContent1"
@@ -11,18 +10,15 @@
         <!-- Collapsible wrapper -->
         <div class="collapse navbar-collapse" id="navbarSupportedContent1">
             <!-- Navbar brand -->
-            <a class="navbar-brand mt-2 mt-sm-0" href="https://mdbootstrap.com/">
+            <a class="navbar-brand mt-2 mt-sm-0" href="/">
                 e-commerce
             </a>
             <!-- Left links -->
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item ">
-                    <a class="nav-link {{ (request()->is('/')) ? 'active' : ''}}" href="/">Home</a>
+                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="/">Home</a>
                 </li>
             </ul>
-            <!-- Left links -->
         </div>
-        <!-- Collapsible wrapper -->
-    <!-- Container wrapper -->
 </nav>
-<!-- Navbar ends here -->
+

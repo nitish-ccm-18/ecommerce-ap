@@ -38,7 +38,7 @@ class ProductController extends Controller
         ]);
         
         $image = $request->file('product_image');
-        $image_filename = time() . $image->getClientOriginalName();
+        $image_filename = time().'-'.$image->getClientOriginalName();
         $image->move(public_path('public/Image/Products'),$image_filename);
 
         Product::create([
@@ -61,12 +61,6 @@ class ProductController extends Controller
     public function show($id)
     {
         $product = Product::find($id);
-        
-        // if product not found
-        if($product == null) 
-        {
-            return back();
-        }
 
         $category = $product->category;
         return view('product', ['product'=>$product,'category'=>$category]);
@@ -128,7 +122,7 @@ class ProductController extends Controller
             }
             
             $file= $request->file('product_image');
-            $filename= time().$file->getClientOriginalName();
+            $filename= time().'-'.$file->getClientOriginalName();
             $file-> move(public_path('public/Image/Products'), $filename);
 
             Product::where('id',$request->id)->update([

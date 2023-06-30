@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('title')
-    User Dashboard
+    Checkout
 @endsection
 
 @section('content')

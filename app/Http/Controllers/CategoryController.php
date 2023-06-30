@@ -12,7 +12,7 @@ class CategoryController extends Controller
     public function index()
     {
         $categories = Category::all();
-        return view('vendor.categories.index', ['categories'=>$categories]);
+        return view('categories.index', ['categories'=>$categories]);
     }
 
     // Display form for creating category
@@ -24,15 +24,22 @@ class CategoryController extends Controller
     // Store a newly created Category
     public function store(Request $request)
     {
+       
         // validate data
         $request->validate([
-            'category_name' => 'required | max:10',
-            'category_description' => 'required '
+            'name' => 'required | max:10',
+            'description' => 'required',
+            'thumbnail' => 'required',
         ]);
 
+        $image = $request->file('thumbnail');
+        $image_filename = time() . $image->getClientOriginalName();
+        $image->move(public_path('public/Image/Categories'),$image_filename);
+
         Category::create([
-            'name' => $request->category_name,
-            'description' => $request->category_description,
+            'name' => $request->name,
+            'description' => $request->description,
+            'thumbnail' => $image_filename,
             'status' => TRUE
         ]);
         Alert('Created Successfully','New category created successfully.');
@@ -57,16 +64,28 @@ class CategoryController extends Controller
     // Update specified
     public function edit(Request $request) 
     {
-
         // validate data
         $request->validate([
-            'category_name' => 'required | max:10',
-            'category_description' => 'required'
+            'name' => 'required | max:10',
+            'description' => 'required',
+            
         ]);
+        if($request->file('thumbnail')) {
+            // remove existing file
+            $image = Category::find($request->id)->thumbnail;
+            if(file_exists(public_path().'/public/Image/Categories/'.$image) && $image){
+                unlink(public_path().'/public/Image/Categories/'.$image);
+            }
+
+            $file= $request->file('thumbnail');
+            $filename= time().'-'.$file->getClientOriginalName();
+            $file-> move(public_path('public/Image/Categories'), $filename);
+        }
 
         $category = Category::find($request->id);
-        $category->name = $request->category_name;
-        $category->description = $request->category_description;
+        $category->name = $request->name;
+        $category->description = $request->description;
+        $category->thumbnail = $filename;
         $category->save();
 
         Alert('Updated Successfully','Category updated successfully.');
@@ -90,5 +109,4 @@ class CategoryController extends Controller
         Alert('Status Changed','Category status created successfully.');
         return redirect('/vendor/categories');
     }
-   
 }

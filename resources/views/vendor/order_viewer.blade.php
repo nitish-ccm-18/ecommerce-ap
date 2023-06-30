@@ -1,15 +1,15 @@
 @extends('layouts.vendor.main')
 
 @section('title')
-    Vendor Dashboard
+    Order : {{ $order[0]->id }}
 @endsection
+
 @section('content')
 <!-- Begin Page Content -->
 <div class="container-fluid">
 <div class="row">
   <p>Order Id : {{ $order[0]->id }}</p>
     @foreach ($order[0]->orderdetails as $item)
-    {{-- {{dd($item)}} --}}
     <div class="card col-3">
       <img class="card-img-top" src="{{ url('/public/Image/Products/'.$item->product->image)}}" height="200px" width="100px" alt="Card image cap">
       <div class="card-body">

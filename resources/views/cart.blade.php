@@ -1,15 +1,11 @@
 @extends('layouts.app')
 
 @section('title')
-    Cart | GetProduct
+    Cart
 @endsection
 
-
-
-
-
 @section('content')
-   
+
     @if (Session::get('cart'))
         <div class="row">
             <table class="table" id="products_table">
@@ -23,7 +19,7 @@
                 </thead>
                 <tbody>
                     @php $total = 0 @endphp
-            
+
                     @foreach (Session::get('cart') as $id => $product)
                         @php $total += $product['price'] * $product['quantity'] @endphp
                         <tr data-id="{{ $id }}">
@@ -40,10 +36,10 @@
                             <td data-th="Price"><span class="price">$ {{ $product['price'] }}</span></td>
                             <td data-th="Quantity">
                                 <input type="number" value="{{ $product['quantity'] }}"
-                                    class="form-control quantity update-cart" style="max-width: 10vw;" min="1"/>
+                                    class="form-control quantity update-cart" style="max-width: 10vw;" min="1" />
                                 <span id="quantityStatus" class="text-success"></span>
                             </td>
-                            <td data-th="Subtotal" class="text-center " >
+                            <td data-th="Subtotal" class="text-center ">
                                 <span class="subtotal">$ {{ $product['price'] * $product['quantity'] }}</span>
                             </td>
                             <td class="actions" data-th="">
@@ -51,29 +47,27 @@
                             </td>
                         </tr>
                     @endforeach
-
-
-
                 </tbody>
             </table>
+
             <div class="sticky-bottom d-flex justify-content-between bg-dark p-5 text-white">
-                 <div>
-                    <h3 >Total : $ <span id="totalprice">{{ $total }}</span></h3>
-                 </div>
-                 <div>
+                <div>
+                    <h3>Total : $ <span id="totalprice">{{ $total }}</span></h3>
+                </div>
+                <div>
                     <a href="/" class="btn btn-outline-warning ">&lt;&lt;Continue Shoppping</a>
                     <a href="/checkout" class="btn btn-outline-primary text-white">Checkout</a>
-                 </div>
+                </div>
             </div>
-        
-    @else
-        <h2 class="text-center">No Products in cart</h2>
+        @else
+            <h2 class="text-center">No Products in cart</h2>
     @endif
 
     </div>
 
-    @push('head')
+    @push('scripts')
         <script>
+            // Update cart quantity 
             $('.update-cart').change(function(e) {
                 e.preventDefault();
                 var ele = $(this);
@@ -99,7 +93,7 @@
             $()
 
 
-
+            // remove from cart
             $('.remove-cart').click(function(e) {
                 e.preventDefault();
 

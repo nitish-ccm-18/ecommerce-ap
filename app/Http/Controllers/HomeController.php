@@ -20,7 +20,7 @@ class HomeController extends Controller
             $products = Product::where(['products.status' => 1, 'categories.status' => 1, 'products.category_id' => $category])
                 ->join('categories', 'products.category_id', '=', 'categories.id')
                 ->get(['products.*', 'categories.status']);
-            if($products->isNotEmpty()){
+            if ($products->isNotEmpty()) {
                 $products = $products->toQuery()->paginate(6);
             }
             // Get all active status

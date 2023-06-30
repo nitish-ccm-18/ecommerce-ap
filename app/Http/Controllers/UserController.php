@@ -13,10 +13,12 @@ use RealRashid\SweetAlert\Facades\Alert;
 class UserController extends Controller
 {
 
-    // Login Page
-    public function login() {
-        return view('users.login');
+    // Dashboard page
+    public function dashboard() {
+        return view('users.dashboard');
     }
+
+
 
     // register
     public function registerPage() {

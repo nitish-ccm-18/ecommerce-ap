@@ -56,9 +56,14 @@ class ProfileController extends Controller
     }
 
     // Show user
-    public function show($id) {
-        // fetch user profile
-        $profile = User::with('profile')->where('id',$id)->get();
-        return view('profile.show',['profile'=>$profile]);
+    public function show() {
+        $user_id = Auth::user()->id;
+        $user_type = Auth::user()->type;
+        $profile = User::with('profile')->where('id',$user_id)->get();
+
+        if($user_type == 'admin') 
+            return view('profile.vendor_profile',['profile'=>$profile]);
+        else        
+            return view('profile.user_profile',['profile'=>$profile]);
     }
 }

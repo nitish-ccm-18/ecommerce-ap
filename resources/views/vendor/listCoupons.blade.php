@@ -1,7 +1,7 @@
 @extends('layouts.vendor.main')
 
 @section('title')
-    Vendor Dashboard
+    Coupons
 @endsection
 
 

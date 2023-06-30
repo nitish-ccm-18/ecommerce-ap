@@ -1,9 +1,8 @@
 @extends('layouts.vendor.main')
 
 @section('title')
-    Create Product | GetProduct
+    Add Product
 @endsection
-
 
 @section('content')
 <div class="container-fluid">
@@ -11,6 +10,7 @@
     <form action="/vendor/products/create" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
+            <label for="ProductName" class="form-label">Product Category</label>
             <select class="form-control form-select mb-3" name="category_id" id="categories">
                 @foreach ($categories as $category)
                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -32,7 +32,7 @@
                 <label for="ProductName" class="form-label">Original Price</label>
                 <div class="input-group">
                     <span class="input-group-text">$</span>
-                    <input type="text" class="form-control" aria-label="Amount ()" name="product_price">
+                    <input type="number" class="form-control" aria-label="Amount ()" name="product_price" min="0">
                 </div>
                 @error('product_price')
                     <span class="text-danger">{{ $message }}</span>
@@ -42,7 +42,7 @@
                 <label for="ProductName" class="form-label">Sale Price</label>
                 <div class="input-group">
                     <span class="input-group-text">$</span>
-                    <input type="text" class="form-control" aria-label="Amount ()" name="product_sale_price">
+                    <input type="number" class="form-control" aria-label="Amount ()" name="product_sale_price" min="0">
                 </div>
                 @error('product_sale_price')
                     <span class="text-danger">{{ $message }}</span>
@@ -52,14 +52,14 @@
         <div class="row mb-3">
             <div class="col">
                 <label for="ProductName" class="form-label">Quantity</label>
-                <input type="number" class="form-control" placeholder="i.e 10" name="product_quantity">
+                <input type="number" class="form-control" placeholder="i.e 10" name="product_quantity" min="0" max="1000">
                 @error('product_quantity')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
             <div class="col">
                 <label for="ProductName" class="form-label">Weight</label>
-                <input type="number" class="form-control" placeholder="i.e 10 KG" name="product_weight">
+                <input type="number" class="form-control" placeholder="i.e 10 KG" name="product_weight" min="0" max="1000">
                 @error('product_weight')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -73,22 +73,23 @@
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
-        <div class="form-floating mb-3">
+        <div class="mb-3">
+            <label for="ProductDescription">Product Description</label>
             <textarea class="form-control" placeholder="Leave a comment here" name="product_description" id="ProductDescription"
                 style="height: 100px"></textarea>
-            <label for="ProductDescription">Comments</label>
+            
             @error('product_description')
                 <span class="text-danger">{{ $message }}</span>
             @enderror
         </div>
         <div class="mb-3">
-            <button type="submit" class="btn btn-primary form-control">Create</button>
+            <button type="submit" class="btn btn-primary form-control">Create Product</button>
         </div>
     </form>
 </div>
 
 
-    @push('head')
+    @push('scripts')
         <script>
             $(document).ready(function() {
                 fetchCategories();

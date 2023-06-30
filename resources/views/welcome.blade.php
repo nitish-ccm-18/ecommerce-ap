@@ -1,9 +1,8 @@
 @extends('layouts.app')
 
 @section('title')
-    Welcome | GetProduct
+    Welcome
 @endsection
-
 
 @section('content')
     <nav class="navbar navbar-expand-lg navbar-light mt-3 mb-5 ">
@@ -11,7 +10,7 @@
         <div class="container-fluid">
 
             <!-- Navbar brand -->
-            <a class="navbar-brand" href="#">Categories:</a>
+            <strong>Categories:</strong>
 
 
             <!-- Collapsible wrapper -->
@@ -44,7 +43,7 @@
         </div>
         <div class="text-center">
             <div class="row" id="ProductViewer">
-                @if($products && $products->isNotEmpty())
+                @if ($products && $products->isNotEmpty())
                     @foreach ($products as $id => $product)
                         <div class="col-lg-2 col-md-2 mb-4" data-id="{{ $product->id }}">
                             <div class="card">
@@ -85,7 +84,7 @@
                     <div class="d-flex justify-content-center mt-3">
                         {{ $products->links() }}
                     </div>
-                    @else
+                @else
                     <div class="d-flex justify-content-center mt-3">
                         <h3 class="text-center">Products will be uploaded soon.</h3>
                     </div>
@@ -101,10 +100,8 @@
                 </div>
             </div> --}}
 
-            @push('head')
+            @push('scripts')
                 <script>
-                    
-
                     $('#SubsribeBtn').click(function(e) {
                         $.ajax({
                             method: 'POST',
@@ -144,8 +141,6 @@
                             }
                         });
                     });
-
-                    
                 </script>
             @endpush
 

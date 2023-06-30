@@ -18,7 +18,7 @@
         rel="stylesheet">
 
 
-    <title> @yield('title') </title>
+    <title> @yield('title') | e-Commerce</title>
     @stack('styles')
 </head>
 
@@ -38,7 +38,7 @@
 
 
 
-    @stack('head')
+    @stack('scripts')
     @include('sweetalert::alert')
     <script>
         $(document).ready(function() {

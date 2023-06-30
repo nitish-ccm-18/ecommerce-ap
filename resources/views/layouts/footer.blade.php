@@ -34,8 +34,8 @@
 
     <!-- Copyright -->
     <div class="text-center p-3">
-        © 2022 Copyright:
-        <a class="text-white" href="https://mdbootstrap.com">ni30@infomail</a>
+        © 2023 Copyright:
+        <a class="text-white" href="/">ecommerce@demo.com</a>
     </div>
     <!-- Copyright -->
 </footer>

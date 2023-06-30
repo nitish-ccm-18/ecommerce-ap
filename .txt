@@ -1,0 +1,109 @@
++--------+----------+------------------------------------+------------------+------------------------------------------------------------+------------------------------------------+
+| Domain | Method   | URI                                | Name             | Action                                                     | Middleware                               |
++--------+----------+------------------------------------+------------------+------------------------------------------------------------+------------------------------------------+
+|        | POST     | address/new                        |                  | App\Http\Controllers\AddressController@store               | web                                      |
+|        | GET|HEAD | address/new                        |                  | Illuminate\Routing\ViewController                          | web                                      |
+|        | GET|HEAD | api/user                           |                  | Closure                                                    | api                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate:sanctum |
+|        | POST     | authenticate                       |                  | App\Http\Controllers\AuthController@authenticate           | web                                      |
+|        | GET|HEAD | cart                               | cart             | Illuminate\Routing\ViewController                          | web                                      |
+|        | GET|HEAD | cart/add/{id}                      |                  | App\Http\Controllers\CartController@add                    | web                                      |
+|        | GET|HEAD | cart/count                         | cart.count       | App\Http\Controllers\AjaxController@countCartItems         | web                                      |
+|        | DELETE   | cart/remove                        | cart.remove      | App\Http\Controllers\CartController@remove                 | web                                      |
+|        | POST     | cart/store                         | cart.store       | App\Http\Controllers\AjaxController@add_to_cart            | web                                      |
+|        | PATCH    | cart/update                        | cart.update      | App\Http\Controllers\CartController@update                 | web                                      |
+|        | GET|HEAD | categories                         |                  | App\Http\Controllers\CategoryController@index              | web                                      |
+|        | GET|HEAD | categories/all                     |                  | App\Http\Controllers\CategoryController@fetchCategories    | web                                      |
+|        | GET|HEAD | checkout                           |                  | App\Http\Controllers\CheckoutController@checkoutPage       | web                                      |
+|        | POST     | checkout                           |                  | App\Http\Controllers\CheckoutController@checkout           | web                                      |
+|        | GET|HEAD | coupon/check                       |                  | App\Http\Controllers\CouponController@checkCoupon          | web                                      |
+|        | GET|HEAD | coupon/remove                      |                  | App\Http\Controllers\CouponController@removeCoupon         | web                                      |
+|        | POST     | coupons/validate                   |                  | App\Http\Controllers\CouponController@validateCoupon       | web                                      |
+|        | POST     | forgot-password                    | password.email   | Closure                                                    | web                                      |
+|        | GET|HEAD | forgot-password                    | password.request | Closure                                                    | web                                      |
+|        | GET|HEAD | login                              | login            | App\Http\Controllers\AuthController@login                  | web                                      |
+|        | GET|HEAD | logout                             |                  | App\Http\Controllers\AuthController@logout                 | web                                      |
+|        | GET|HEAD | my-orders                          |                  | App\Http\Controllers\UserController@myOrders               | web                                      |
+|        | GET|HEAD | password/forgot                    |                  | App\Http\Controllers\AuthController@sendEmailForm          | web                                      |
+|        | POST     | password/forgot                    |                  | App\Http\Controllers\AuthController@sendPasswordResetMail  | web                                      |
+|        | GET|HEAD | products                           |                  | App\Http\Controllers\ProductController@index               | web                                      |
+|        | GET|HEAD | products/category/{category}       |                  | App\Http\Controllers\ProductController@productByCategory   | web                                      |
+|        | GET|HEAD | products/{id}                      |                  | App\Http\Controllers\ProductController@show                | web                                      |
+|        | GET|HEAD | profile/edit                       |                  | App\Http\Controllers\ProfileController@edit                | web                                      |
+|        | PATCH    | profile/update                     |                  | App\Http\Controllers\ProfileController@update              | web                                      |
+|        | GET|HEAD | profile/{id}                       |                  | App\Http\Controllers\ProfileController@showUserProfile     | web                                      |
+|        | POST     | reset-password                     | password.update  | Closure                                                    | web                                      |
+|        | GET|HEAD | reset-password/{token}             | password.reset   | Closure                                                    | web                                      |
+|        | GET|HEAD | sanctum/csrf-cookie                |                  | Laravel\Sanctum\Http\Controllers\CsrfCookieController@show | web                                      |
+|        | POST     | subscribe                          | subscribe        | App\Http\Controllers\HomeController@subscribe              | web                                      |
+|        | GET|HEAD | test-resource                      |                  | Closure                                                    | web                                      |
+|        | GET|HEAD | user/orders                        |                  | App\Http\Controllers\OrderController@orders                | web                                      |
+|        | GET|HEAD | users/dashboard                    | user.dashboard   | App\Http\Controllers\UserController@dashboard              | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        | GET|HEAD | users/order/{id}                   |                  | App\Http\Controllers\OrderController@showOrder             | web                                      |
+|        | GET|HEAD | users/orders/{id}                  |                  | App\Http\Controllers\OrderController@userSingleOrderViewer | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        | GET|HEAD | users/profile                      | user.profile     | App\Http\Controllers\ProfileController@show                | web                                      |
+|        | POST     | users/register                     |                  | App\Http\Controllers\UserController@store                  | web                                      |
+|        | GET|HEAD | vendor/categories                  |                  | App\Http\Controllers\VendorController@listCategories       | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/categories/create           | category.create  | App\Http\Controllers\CategoryController@create             | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | POST     | vendor/categories/create           |                  | App\Http\Controllers\CategoryController@store              | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | POST     | vendor/categories/edit             |                  | App\Http\Controllers\CategoryController@edit               | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/categories/edit/{id}        | category.edit    | App\Http\Controllers\CategoryController@editPage           | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/categories/status/edit/{id} |                  | App\Http\Controllers\CategoryController@changeStatus       | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/categories/{id}             |                  | App\Http\Controllers\CategoryController@show               | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/coupons                     |                  | App\Http\Controllers\VendorController@listCoupons          | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/coupons/create              |                  | App\Http\Controllers\CouponController@create               | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | POST     | vendor/coupons/store               |                  | App\Http\Controllers\CouponController@store                | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/dashboard                   |                  | App\Http\Controllers\VendorController@dashboard            | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/products                    |                  | App\Http\Controllers\VendorController@listProducts         | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/products/create             |                  | App\Http\Controllers\ProductController@create              | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | POST     | vendor/products/create             |                  | App\Http\Controllers\ProductController@store               | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | POST     | vendor/products/edit               |                  | App\Http\Controllers\ProductController@edit                | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/products/edit/{id}          |                  | App\Http\Controllers\ProductController@editPage            | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/products/feature/edit/{id}  |                  | App\Http\Controllers\ProductController@markFeaturedProduct | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/products/status/edit/{id}   |                  | App\Http\Controllers\ProductController@changeStatus        | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/products/{id}               |                  | App\Http\Controllers\ProductController@showSingleProduct   | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | vendor/profile                     | vendor.profile   | App\Http\Controllers\ProfileController@show                | web                                      |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\Authenticate         |
+|        |          |                                    |                  |                                                            | App\Http\Middleware\VendorMiddleware     |
+|        | GET|HEAD | {category?}                        |                  | App\Http\Controllers\HomeController@index                  | web                                      |
++--------+----------+------------------------------------+------------------+------------------------------------------------------------+------------------------------------------+

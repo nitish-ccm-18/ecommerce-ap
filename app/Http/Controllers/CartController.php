@@ -7,7 +7,6 @@ use App\Models\Product;
 use Session;
 class CartController extends Controller
 {
-
     // update in cart
     public function update(Request $request)
     {
@@ -24,7 +23,6 @@ class CartController extends Controller
                 $total += $item['price'] * $item['quantity'];
             }
         
-
             session()->put('cart', $cart);
             session()->put('total', $total);
             Session::forget('coupon');
